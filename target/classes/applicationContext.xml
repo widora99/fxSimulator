@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        
+        ">
+
+	<context:property-placeholder
+		location="classpath:system.properties,classpath:validation.properties"
+		ignore-resource-not-found="true" />
+
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceUnitName" value="samplePersistenceUnit" />
+		<property name="packagesToScan">
+			<list>
+				<value>com.sample.entity.*</value>
+			</list>
+		</property>
+
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+<!-- 				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop> -->
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+			</props>
+		</property>
+	</bean>
+
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	<bean
+		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>message</value>
+				<value>exceptions</value>
+				<value>display</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<task:executor id="executor" pool-size="25" />
+
+
+
+	<context:load-time-weaver
+		weaver-class="org.springframework.instrument.classloading.ReflectiveLoadTimeWeaver"
+		aspectj-weaving="on" />
+
+
+	<!-- Make this available across all of Spring MVC -->
+	<mvc:annotation-driven />
+
+
+	<context:component-scan base-package="com.sample.*" />
+
+
+	<!-- web request interceptor -->
+	<!--
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.sample.interceptor.LogInterceptor" />
+		</mvc:interceptor>
+
+	</mvc:interceptors>
+	-->
+
+	<!-- exception handler -->
+
+
+
+	<bean
+		class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
+
+	<mvc:resources mapping="/resources/**"
+		location="/, classpath:/META-INF/web-resources/" />
+
+	<mvc:default-servlet-handler />
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+		<property name="basename" value="views" />
+	</bean>
+
+	<bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/defs/templates.xml</value>
+				<value>/WEB-INF/defs/pages.xml</value>
+			</list>
+		</property>
+		<property name="preparerFactoryClass"
+			value="org.springframework.web.servlet.view.tiles3.SpringBeanPreparerFactory" />
+	</bean>
+
+
+
+	<!-- コンテナ用のXML定義 -->
+	<!-- 今のところ特に設定はなし -->
+
+
+	<!-- <bean -->
+	<!-- class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"></bean> -->
+	<!-- <bean -->
+	<!-- class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"></bean> -->
+
+	<!-- <bean id="viewResolver" -->
+	<!-- class="org.springframework.web.servlet.view.ResourceBundleViewResolver"> -->
+	<!-- <property name="basename" value="views" /> -->
+	<!-- </bean> -->
+
+	<!-- <bean id="tilesConfigurer" -->
+	<!-- class="org.springframework.web.servlet.view.tiles3.TilesConfigurer"> -->
+	<!-- <property name="definitions"> -->
+	<!-- <list> -->
+	<!-- <value>/WEB-INF/defs/templates.xml</value> -->
+	<!-- <value>/WEB-INF/defs/pages.xml</value> -->
+	<!-- </list> -->
+	<!-- </property> -->
+	<!-- <property name="preparerFactoryClass" -->
+	<!-- value="org.springframework.web.servlet.view.tiles3.SpringBeanPreparerFactory" -->
+	<!-- /> -->
+	<!-- </bean> -->
+
+</beans>

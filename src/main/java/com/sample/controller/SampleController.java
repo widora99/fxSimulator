@@ -21,13 +21,13 @@ public class SampleController {
 
 	@Autowired
 	private SampleRepositoryManager sampleRepositoryManager ; 
-	
+/*	
 	/**
-	 * 通常の画面表示のサンプル
+	 * mavレスポンスンのサンプル
 	 * 
 	 * @return
-	 */
-	@RequestMapping(path = "/sample", method = RequestMethod.GET)
+	 *
+	@RequestMapping(path = "/sample/db", method = RequestMethod.GET)
 	public ModelAndView mavSample(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		ModelAndView mav = new ModelAndView("sample");
@@ -42,7 +42,7 @@ public class SampleController {
 	 * jsonレスポンスのサンプル
 	 * 
 	 * @param val
-	 */
+	 *
 	@RequestMapping(path = "/sample/{val}/**", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public String jsonSample(@PathVariable() String val) throws Exception {
@@ -50,6 +50,18 @@ public class SampleController {
 		String json = "{\"data\": \"hoge\"}";
 		return json;
 	}
+*/
+	/**
+	 * メインシミュレーション画面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(path = "/main", method = RequestMethod.GET)
+	public ModelAndView mainSimulate(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+		ModelAndView mav = new ModelAndView("main");
+
+		return mav;
+	}
 	
 }

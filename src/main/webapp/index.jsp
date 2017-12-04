@@ -7,14 +7,15 @@
 		<!--  <link rel="shortcut icon" href="img/sample.ico" type="image/vnd.microsoft.icon" />-->
 		<link rel="stylesheet" media="screen" href="css/lib/bootstrap.css">
 		<link rel="stylesheet" media="screen" href="css/index.css">
-		<script src='/fxSimulator/js/lib/jquery.js'></script>
+		<script src='js/lib/jquery.js'></script>
 		<script src='js/index.js'></script>
 	</head>
 	<body>
 		<div id="loginarea">
-			<div>ログイン</div>
-			<div><span class="login_label">ID</span><input id="userid" type="text"></div>
-			<div><span class="login_label">パスワード</span><input id="password" type="password"></div>
+			<div><span class="login_title">FX検証システム</span></div>
+			<div><input id="userid" type="text" placeholder="id"></div>
+			<div><input id="password" type="password" placeholder="password"></div>
+			<div><a href="main"><button class="btn btn-info">Login</button></a></div>
 		</div>
 	</body>
 </html>
