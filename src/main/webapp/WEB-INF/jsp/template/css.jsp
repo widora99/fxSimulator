@@ -3,4 +3,4 @@
 <c:url var="jqueryUICssURL" value="/css/lib/jquery-ui.css"/><link rel="stylesheet" media="all" href="${ jqueryUICssURL }">
 <c:url var="pqGridCssURL" value="/css/lib/pqgrid.min.css"/><link rel="stylesheet" media="all" href="${ pqGridCssURL }">
 <c:url var="fontAwesomeCssURL" value="/css/lib/font-awesome.min.css"/><link rel="stylesheet" media="all" href="${ fontAwesomeCssURL }">
-<c:url var="mainURL" value="/css/lib/font-awesome.min.css"/><link rel="stylesheet" media="all" href="${ mainURL }">
+<c:url var="mainURL" value="/css/main.css"/><link rel="stylesheet" media="all" href="${ mainURL }">

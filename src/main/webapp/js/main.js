@@ -9,6 +9,20 @@ $(function () {
 	// datepickerを日本語化する
 	$.datepicker.setDefaults( $.datepicker.regional[ "ja" ] );
 	
+	
+	function addRow(rowIndx) {
+        var rowData = ["", "", "", "", "", "", "", "", ""]; //empty row template
+        //var rownum = $pqgrid.find("table:eq(2)").find("tr").length;
+        $pqgrid.pqGrid("addRow", { rowIndxPage: rowIndx, rowData: rowData });
+    }
+    //called by delete button.
+    function deleteRow(rowIndx) {
+        $pqgrid.pqGrid("addClass", { rowIndx: rowIndx, cls: 'pq-row-delete' });
+        var rowData = $pqgrid.pqGrid("getRowData", { rowIndx: rowIndx });
+        $pqgrid.pqGrid("deleteRow", { rowIndx: rowIndx, effect: true });
+
+    }
+	
 	// 時刻を[:]つきにする
     function formatTime(ui) {
         var cellData = ui.cellData;
@@ -59,6 +73,7 @@ $(function () {
         $this.filter(".pq-to").datepicker("option", "defaultDate", new Date(Date.now()));
     }
     
+    // 列と配列の紐づけを指定
     function idxSelector(idx) {
     	switch(idx) {
         case 1:
@@ -74,6 +89,42 @@ $(function () {
         default:
         	return [];
         }
+    }
+    
+    // 時間から市場を選択する
+    function marketSelector(time) {
+    	if(time.length >= 2) {
+    		if(time[1] === ":") {
+    			var num = Number(time.slice(0, 1)); 
+    		} else {
+    			var num = Number(time.slice(0, 2));
+    		}
+    		if(num >= 2 && num < 9) {
+    			return "アジア";
+    		} else if(num >= 9 && num < 14) {
+    			return "ロンドン";
+    		} else if(num >= 14 && num < 21) {
+    			return "NY";
+    		}
+    	}
+    	return "";
+    }
+    
+    // gridを変更したとき
+    function gridChanged(event, ui) {
+    	// 変更されたすべての行に対して実行
+    	for(var row of ui.rowList) {
+    		if(row.newRow !== undefined) {
+	    		var time = row.newRow[2];
+	    		// 時刻が変更されていれば市場を選択しなおす
+	    		if(time !== undefined) {
+	    			var cell = $pqgrid.pqGrid( "getCell", { rowIndx: row.rowIndx, dataIndx: 3 } );
+	    			if(cell !== null && cell !== undefined) {
+	    				cell.text(marketSelector(time));
+	    			}
+	    		}
+    		}
+    	}
     }
     
     // セレクト式エディタ
@@ -159,12 +210,14 @@ $(function () {
 
 
     var obj = { 
-    	width: 900,
+    	width: 980,
     	height: 700,
     	showBottom: false,
+    	stripeRows: true,
     	scrollModel: { autoFit: true },
     	selectionModel: { type: 'cell' },
         filterModel: { on: true, mode: "AND", header: true },
+        change: gridChanged,
     };
     obj.colModel = [
     	{ title: "日付", width: 200, dataType: "date", align: 'center',
@@ -195,6 +248,7 @@ $(function () {
 	    { title: "売買", width: 50, dataType: "string", align: 'center',
             editor: {
                 type: "textbox",
+                align: "center",
                 init: autoCompleteEditor
             },
 	    	filter: { 
@@ -246,12 +300,27 @@ $(function () {
     	},
 	    { title: "備考", width: 200, dataType: "string",
 	    	filter: { type: 'textbox', condition: 'begin', listeners: ['keyup'] }
-    	}
+    	},
+    	{ title: "", editable: false, minWidth: 80, sortable: false, render: function (ui) {
+            return "<button type='button' class='btn btn-info add_btn'>+</button><button type='button' class='btn btn-danger delete_btn'>×</button>";
+        }}
 	];
     obj.dataModel = {
     	data: data
     };
     $pqgrid.pqGrid(obj);
+        
+    $pqgrid.on("click", ".add_btn", function() {
+    	var $tr = $(this).closest("tr"),
+        rowIndx = $pqgrid.pqGrid("getRowIndx", { $tr: $tr }).rowIndx;
+    	addRow(rowIndx + 1);
+    });
+    
+    $pqgrid.on("click", ".delete_btn", function() {
+    	var $tr = $(this).closest("tr"),
+        rowIndx = $pqgrid.pqGrid("getRowIndx", { $tr: $tr }).rowIndx;
+    	deleteRow(rowIndx);
+    });
 
 });
     
