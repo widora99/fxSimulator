@@ -1,5 +1,5 @@
 body {
-	margin: 30px 50px 30px 100px;
+	margin: 10px 10px;
 }
 
 #grid_array button {
@@ -9,4 +9,60 @@ body {
 
 tr.pq-grid-oddRow > td{
     background:#fafafa;
+}
+
+
+.title {
+	display: inline-block;
+	text-align: center;
+	border: solid 1px #ececec;
+	width: 150px;
+	background-color: rgb(197, 197, 197);
+}
+
+.head-val {
+	display: inline-block;
+	border: solid 1px #ececec;
+	width: 150px;
+	background-color: #ffffff;
+}
+
+.long {
+	width: 760px;
+}
+
+.short {
+	text-align: center;
+	width: 50px;
+}
+
+#max-trade-area {
+	position: absolute;
+	top: 55px;
+	left: 520px;
+	width: 150px;
+}
+
+#max-trade {
+	width: 150px;
+	height: 50px;
+	border: solid 1px #ececec;
+	font-size: 32px;
+	text-align: center;
+	vertical-align: center;
+}
+
+.win {
+	background-color: rgba(137, 159, 210, 1);
+}
+
+.loose {
+	background-color: rgb(226, 132, 149)
+}
+
+.result {
+	display: inline-block;
+	border: solid 1px #ececec;
+	width: 50px;
+	background-color: #ffffff;
 }

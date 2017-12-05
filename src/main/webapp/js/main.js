@@ -1,5 +1,64 @@
 $(function () {
+
+	// 条件名の変更を反映する
+	$("#rule1").change(function() {
+		$("#div-rule1").text($(this).val());
+	});
 	
+	$("#rule2").change(function() {
+		$("#div-rule2").text($(this).val());
+	});
+	
+	$("#rule3").change(function() {
+		$("#div-rule3").text($(this).val());
+	});
+
+	// 表部分の値を集計してヘッダ部に反映する
+	function aggregate() {
+		var $pqtable = $pqgrid.find(".pq-grid-table:eq(1)");
+		var $pqrow = $pqtable.find(".pq-grid-row");
+		var max_trade = $pqrow.length;
+		$("#max-trade").text(max_trade);
+		var win1 = 0;
+		var win2 = 0;
+		var win3 = 0;
+		$pqrow.each(function() {
+			if($(this).children("td:eq(6)").text() === "〇") {
+				win1++;
+			} else {
+				win1 = 0;
+			}
+			if($(this).children("td:eq(7)").text() === "〇") {
+				win2++;
+			} else {
+				win2 = 0;
+			}
+			if($(this).children("td:eq(8)").text() === "〇") {
+				win3++;
+			} else {
+				win3 = 0;
+			}
+			
+			for(var i = 0; i < 9; i++) {
+				var $cell1 = $("#div-rule1").parent().children(".head-val:eq(" + i + ")");
+				if(win1 == i + 2) {
+					$cell1.text(Number($cell1.text()) + 1);
+				}
+				var $cell2 = $("#div-rule2").parent().children(".head-val:eq(" + i + ")");
+				if(win2 == i + 2) {
+					$cell2.text(Number($cell2.text()) + 1);
+				}
+				var $cell3 = $("#div-rule3").parent().children(".head-val:eq(" + i + ")");
+				if(win3 == i + 2) {
+					$cell3.text(Number($cell3.text()) + 1);
+				}
+			}
+			
+			
+		});
+	}
+	
+	/* 表部分の処理 */
     dateIdx = ["日", "月", "火", "水", "木", "金", "土"];
     ruleIdx = ["〇", "×"];
     sellIdx = ["売", "買"];
@@ -125,6 +184,8 @@ $(function () {
 	    		}
     		}
     	}
+    	// 集計
+    	aggregate();
     }
     
     // セレクト式エディタ
@@ -212,12 +273,14 @@ $(function () {
     var obj = { 
     	width: 980,
     	height: 700,
+    	showTop: false,
     	showBottom: false,
     	stripeRows: true,
     	scrollModel: { autoFit: true },
     	selectionModel: { type: 'cell' },
         filterModel: { on: true, mode: "AND", header: true },
         change: gridChanged,
+        create: aggregate
     };
     obj.colModel = [
     	{ title: "日付", width: 200, dataType: "date", align: 'center',
