@@ -1,19 +1,20 @@
 package com.sample.controller;
 
-import java.util.List;
+import java.io.IOException;
+import java.nio.charset.Charset;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.sample.entity.SampleEntity;
 import com.sample.entity.repository.SampleRepositoryManager;
 
 @Controller
@@ -63,5 +64,64 @@ public class SampleController {
 
 		return mav;
 	}
+	
+	/**
+	 * 検証結果記録画面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(path = "/result1", method = RequestMethod.GET)
+	public ModelAndView result1(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		ModelAndView mav = new ModelAndView("result1");
+
+		return mav;
+	}
+	
+	/**
+	 * 検証結果記録画面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(path = "/result2", method = RequestMethod.GET)
+	public ModelAndView result2(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		ModelAndView mav = new ModelAndView("result2");
+
+		return mav;
+	}
+	
+    @RequestMapping(value = "/excel", method = RequestMethod.POST)
+    public @ResponseBody
+    String excel(String excel, String extension, HttpServletRequest request) throws IOException {
+        String filename="";
+        if (extension.equals("csv") || extension.equals("xml")) {
+            filename = "result." + extension;
+            HttpSession ses = request.getSession(true);
+            ses.setAttribute("excel", excel);
+        } 
+        return filename;
+    }
+
+    @RequestMapping(value = "/excel", method = RequestMethod.GET)
+    public void excel(String filename, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (filename.equals("result.csv") || filename.equals("result.xml")) {
+            HttpSession ses = request.getSession(true);
+            String excel = (String) ses.getAttribute("excel");
+                        
+            byte[] bytes = excel.getBytes(Charset.forName("UTF-8"));
+                    
+            response.setContentType("text/plain");
+            
+            response.setHeader("Content-Disposition",
+                    "attachment;filename=" + filename);
+            response.setContentLength(bytes.length);
+            ServletOutputStream out = response.getOutputStream();
+            out.write(bytes);
+            
+            out.flush();
+            out.close();
+        }
+    }
 	
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div id="summary_area">
 	<div class="title">通貨ペア</div><div id="c-pair" class="head-val" contenteditable=true>USDJPY</div>
 	<div class="title">時間足</div><div id="period" class="head-val" contenteditable=true>1分足</div>
@@ -46,3 +47,5 @@
 	<div class="head-val short">0</div><div class="head-val short">0</div><div class="head-val short">0</div><div class="head-val short">0</div><div class="head-val short">0</div><div class="head-val short">0</div><div class="head-val short">0</div><div class="head-val short">0</div><div class="head-val short">0</div>
 </div>
 <div id="grid_array"></div>
+
+<c:url var="mainURL" value="/js/main.js" /><script src="${ mainURL }"></script>

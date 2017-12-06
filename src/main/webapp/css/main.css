@@ -66,3 +66,13 @@ tr.pq-grid-oddRow > td{
 	width: 50px;
 	background-color: #ffffff;
 }
+
+#button_area {
+	width: 980px;
+	text-align: right;
+}
+
+#button_area button {
+	margin-top: 5px;
+	margin-right: 5px;
+}
