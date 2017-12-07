@@ -9,20 +9,6 @@ $(function () {
 	// datepickerを日本語化する
 	$.datepicker.setDefaults( $.datepicker.regional[ "ja" ] );
 	
-	
-	function addRow(rowIndx) {
-        var rowData = ["", "", "", "", "", "", "", "", ""]; //empty row template
-        //var rownum = $pqgrid.find("table:eq(2)").find("tr").length;
-        $pqgrid.pqGrid("addRow", { rowIndxPage: rowIndx, rowData: rowData });
-    }
-    //called by delete button.
-    function deleteRow(rowIndx) {
-        $pqgrid.pqGrid("addClass", { rowIndx: rowIndx, cls: 'pq-row-delete' });
-        var rowData = $pqgrid.pqGrid("getRowData", { rowIndx: rowIndx });
-        $pqgrid.pqGrid("deleteRow", { rowIndx: rowIndx, effect: true });
-
-    }
-	
     
     // 列と配列の紐づけを指定
     function idxSelector(idx) {
@@ -117,33 +103,14 @@ $(function () {
 	    { title: "勝率（％）", width: 80, dataType: "string", align: 'center',
 	    	filter: { type: 'textbox', condition: 'begin', listeners: ['keyup'] }
     	},
-    	{ title: "備考", width: 200, dataType: "string",
+    	{ title: "備考", width: 200, dataType: "string", 
 	    	filter: { type: 'textbox', condition: 'begin', listeners: ['keyup'] }
-    	},
-    	{ title: "", editable: false, minWidth: 50, sortable: false, render: function (ui) {
-            return "<button type='button' class='btn btn-info add_btn'>+</button><button type='button' class='btn btn-danger delete_btn'>×</button>";
-        }}
+    	}
 	];
     obj.dataModel = {
     	data: data
     };
     $pqgrid.pqGrid(obj);
-        
-    $pqgrid.on("click", ".add_btn", function() {
-    	var $tr = $(this).closest("tr"),
-        rowIndx = $pqgrid.pqGrid("getRowIndx", { $tr: $tr }).rowIndx;
-    	addRow(rowIndx + 1);
-    });
-    
-    $pqgrid.on("click", ".delete_btn", function() {
-    	var $tr = $(this).closest("tr"),
-        rowIndx = $pqgrid.pqGrid("getRowIndx", { $tr: $tr }).rowIndx;
-    	deleteRow(rowIndx);
-    });
-    
-    $("#button_area").on("click", "#exp_btn", function() {
-    	$pqgrid.pqGrid("exportCsv", { url: "/sample/excel" });
-    });
 
 });
     

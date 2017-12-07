@@ -2,11 +2,6 @@ body {
 	margin: 10px 10px;
 }
 
-#grid_array button {
-	padding: 2px 6px;
-	border: 0px;
-}
-
 tr.pq-grid-oddRow > td{
     background:#fafafa;
 }

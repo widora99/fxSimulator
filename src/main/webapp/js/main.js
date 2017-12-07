@@ -354,7 +354,7 @@ $(function () {
                 listeners: ['change']
             }
     	},
-	    { title: "5pip", width: 50, dataType: "string", align: 'center',
+	    { title: "rule1", width: 50, dataType: "string", align: 'center',
             editor: {
                 type: "textbox",
                 init: autoCompleteEditor
@@ -367,7 +367,7 @@ $(function () {
                 listeners: ['change']
             }
     	},
-	    { title: "8pip", width: 50, dataType: "string", align: 'center',
+	    { title: "rule2", width: 50, dataType: "string", align: 'center',
             editor: {
                 type: "textbox",
                 init: autoCompleteEditor
@@ -380,7 +380,7 @@ $(function () {
                 listeners: ['change']
             }
     	},
-	    { title: "10pip", width: 50, dataType: "string", align: 'center',
+	    { title: "rule3", width: 50, dataType: "string", align: 'center',
             editor: {
                 type: "textbox",
                 init: autoCompleteEditor
@@ -395,10 +395,7 @@ $(function () {
     	},
 	    { title: "備考", width: 200, dataType: "string",
 	    	filter: { type: 'textbox', condition: 'begin', listeners: ['keyup'] }
-    	},
-    	{ title: "", editable: false, minWidth: 80, sortable: false, render: function (ui) {
-            return "<button type='button' class='btn btn-info add_btn'>+</button><button type='button' class='btn btn-danger delete_btn'>×</button>";
-        }}
+    	}
 	];
     obj.dataModel = {
     	data: data
