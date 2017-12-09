@@ -1,5 +1,4 @@
 $(function () {
-
 	
 	/* 表部分の処理 */
     currencyIdx = ["USDJPY", "EURJPY", "GBPJPY", "AUDJPY", "NZDJPY", "CADJPY", "CHFJPY", "EURUSD GBPUSD", "AUDUSD", "NZDUSD", "USDCAD", "USDCHF", "EURAUD", "EURNZD", "EURCAD", "EURCHF", "EURGBP", "GBPAUD", "GBPNZD", "GBPCAD", "GBPCHF AUDNZD", "AUDCAD", "NZDCAD", "AUDCHF", "NZDCHF", "CADCHF"];
@@ -51,7 +50,7 @@ $(function () {
 
     var obj = { 
     	width: 980,
-    	height: 850,
+    	height: 700,
     	showTop: false,
     	showBottom: false,
     	stripeRows: true,

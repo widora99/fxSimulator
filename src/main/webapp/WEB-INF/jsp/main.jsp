@@ -7,7 +7,7 @@
 	<div class="title">検証期間</div><div id="term" class="head-val" contenteditable=true>2/7～3/3</div>
 </div>
 <div>
-	<div class="title">条件</div><div id="condition" class="head-val long" contenteditable=true>xxxxな方法</div>
+	<div class="title">条件</div><textarea id="condition" class="head-val long">xxxxな方法</textarea>
 </div>
 <div>
 	<div class="title">条件名</div><div class="title">トレード回数</div><div class="title">勝率</div>
@@ -16,14 +16,14 @@
 	<div class="title">１日最大トレード回数</div>
 	<div id="max-trade">　</div>
 </div>
-<div>
-	<div class="title"><input id="rule1" type="text" class="head-val" placeholder="条件①"></input></div><div class="head-val">　</div><div class="head-val">　</div>
+<div class="rule_result">
+	<div class="title"><input id="rule1" type="text" class="head-val" placeholder="条件①"></input></div><div id="rulenum1" class="head-val">0</div><div id="ruleper1" class="head-val">0</div>
 </div>
-<div>
-	<div class="title"><input id="rule2" type="text" class="head-val" placeholder="条件②"></input></div><div class="head-val">　</div><div class="head-val">　</div>
+<div class="rule_result">
+	<div class="title"><input id="rule2" type="text" class="head-val" placeholder="条件②"></input></div><div id="rulenum2" class="head-val">0</div><div id="ruleper2" class="head-val">0</div>
 </div>
-<div>
-	<div class="title"><input id="rule3" type="text" class="head-val" placeholder="条件③"></input></div><div class="head-val">　</div><div class="head-val">　</div>
+<div class="rule_result">
+	<div class="title"><input id="rule3" type="text" class="head-val" placeholder="条件③"></input></div><div id="rulenum3" class="head-val">0</div><div id="ruleper3" class="head-val">0</div>
 </div>
 
 <div>

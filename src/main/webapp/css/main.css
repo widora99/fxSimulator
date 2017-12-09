@@ -8,6 +8,7 @@ tr.pq-grid-oddRow > td{
 
 
 .title {
+	vertical-align: top;
 	display: inline-block;
 	text-align: center;
 	border: solid 1px #ececec;
@@ -33,7 +34,7 @@ tr.pq-grid-oddRow > td{
 
 #max-trade-area {
 	position: absolute;
-	top: 55px;
+	top: 83px;
 	left: 520px;
 	width: 150px;
 }
@@ -70,4 +71,12 @@ tr.pq-grid-oddRow > td{
 #button_area button {
 	margin-top: 5px;
 	margin-right: 5px;
+}
+
+.rule_result > .head-val {
+	text-align: center;
+}
+
+#condition {
+	resize: none;
 }

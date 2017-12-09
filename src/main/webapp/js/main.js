@@ -17,76 +17,65 @@ $(function () {
 	function aggregate() {
 		var $pqtable = $pqgrid.find(".pq-grid-table:eq(1)");
 		var $pqrow = $pqtable.find(".pq-grid-row");
-		var max_trade = $pqrow.length;
-		$("#max-trade").text(max_trade);
-		var win1 = 0;
-		var win2 = 0;
-		var win3 = 0;
-		var loose1 = 0;
-		var loose2 = 0;
-		var loose3 = 0;
-		var totalwin1 = 0;
-		var totalwin2 = 0;
-		var totalwin3 = 0;
 		
-		$pqrow.each(function() {
-			if($(this).children("td:eq(6)").text() === "〇") {
-				win1++;
-				totalwin1++;
-				loose1 = 0;
-			} else {
-				win1 = 0;
-				loose1++;
-			}
-			if($(this).children("td:eq(7)").text() === "〇") {
-				win2++;
-				totalwin2++;
-				loose = 0;
-			} else {
-				win2 = 0;
-				loose2++;
-			}
-			if($(this).children("td:eq(8)").text() === "〇") {
-				win3++;
-				totalwin3++;
-				loose3 = 0;
-			} else {
-				win3 = 0;
-				loose3++;
-			}
-			
-			for(var i = 0; i < 9; i++) {
-				var $cell1 = $("#div-rule1").parent().children(".head-val:eq(" + i + ")");
-				if(win1 == i + 2) {
-					$cell1.text(Number($cell1.text()) + 1);
-				}
-				var $cell2 = $("#div-rule2").parent().children(".head-val:eq(" + i + ")");
-				if(win2 == i + 2) {
-					$cell2.text(Number($cell2.text()) + 1);
-				}
-				var $cell3 = $("#div-rule3").parent().children(".head-val:eq(" + i + ")");
-				if(win3 == i + 2) {
-					$cell3.text(Number($cell3.text()) + 1);
-				}
-			}
-			
-			for(var i = 9; i < 18; i++) {
-				var $cell1 = $("#div-rule1").parent().children(".head-val:eq(" + i + ")");
-				if(loose1 == i - 7) {
-					$cell1.text(Number($cell1.text()) + 1);
-				}
-				var $cell2 = $("#div-rule2").parent().children(".head-val:eq(" + i + ")");
-				if(loose2 == i - 7) {
-					$cell2.text(Number($cell2.text()) + 1);
-				}
-				var $cell3 = $("#div-rule3").parent().children(".head-val:eq(" + i + ")");
-				if(loose3 == i - 7) {
-					$cell3.text(Number($cell3.text()) + 1);
-				}
-			}
-			
-		});
+		var win = [0, 0, 0];
+		var loose = [0, 0, 0];
+		var total = [0, 0, 0];
+		var totalwin = [0, 0, 0];
 		
+		var daymax_count = {};
+		
+		for(row of $pqrow) {
+			// 日付ごとの集計配列を作成
+			var key = $(row).children("td:eq(1)").text();
+			daymax_count[key] = (daymax_count[key])? daymax_count[key] + 1 : 1 ;
+			
+			// 条件ごとの連勝を集計
+			for(var j = 0; j < 3; j++) {
+				var rl = $(row).children("td:eq("+(j+6)+")").text();
+				if(rl === "〇") {
+					win[j]++;
+					total[j]++;
+					loose[j] = 0;
+					totalwin[j]++;
+				} else if(rl === "×"){
+					win[j] = 0;
+					total[j]++;
+					loose[j]++;
+				}
+				
+				for(var i = 0; i < 9; i++) {
+					// 連勝数
+					var $win = $("#div-rule" + (j+1)).parent().children(".head-val:eq(" + i + ")");
+					if(win[j] == i + 2) {
+						$win.text(Number($win.text()) + 1);
+					}
+					// 連敗数
+					var $loose = $("#div-rule" + (j+1)).parent().children(".head-val:eq(" + i + 9 + ")");
+					if(loose[j] == i + 2) {
+						$loose.text(Number($loose.text()) + 1);
+					}
+				}
+			}
+		}
+		
+		// 条件ごとのトレード回数と勝率
+		for(var k = 0; k < 3; k++) {
+			$("#rulenum" + (k + 1)).text(total[k]);
+			if(total[k] == 0) {
+				$("#ruleper" + (k + 1)).text("-");
+			} else {
+				$("#ruleper" + (k + 1)).text(Math.round(totalwin[k] * 100 / total[k]) + "%");
+			}
+		}
+		var max = 0;
+		for(var key in daymax_count) {
+			if(max < daymax_count[key]) {
+				max = daymax_count[key];
+			}
+		}
+		// 最大トレード回数
+		$("#max-trade").text(max);
 		
 	}
 	
@@ -285,17 +274,17 @@ $(function () {
     	['2017/1/6', '金', '15:21', 'NY', '売', '〇', '〇', '〇', ''],
     	['2017/1/9', '月', '21:20', 'ロンドン', '買', '×', '×', '〇', ''],
     	['2017/1/9', '月', '21:25', 'ロンドン', '買', '〇', '〇', '×', ''],
-    	['2017/1/9', '月', '21:30', 'ロンドン', '売', '〇', '〇', '×', ''],
+    	['2017/1/9', '月', '21:30', 'ロンドン', '売', '', '〇', '×', ''],
     	['2017/1/9', '月', '21:35', 'ロンドン', '買', '〇', '〇', '〇', ''],
     	['2017/1/9', '月', '21:40', 'ロンドン', '売', '×', '×', '〇', ''],
     	['2017/1/9', '月', '21:45', 'ロンドン', '買', '×', '×', '×', ''],
     	['2017/1/9', '月', '21:50', 'ロンドン', '買', '〇', '×', '×', ''],
-    	['2017/1/9', '月', '21:55', 'ロンドン', '買', '〇', '×', '×', ''],
-    	['2017/1/9', '月', '22:00', 'ロンドン', '買', '〇', '×', '×', ''],
+    	['2017/1/9', '月', '21:55', 'ロンドン', '買', '〇', '', '×', ''],
+    	['2017/1/9', '月', '22:00', 'ロンドン', '買', '〇', '', '×', ''],
     	['2017/1/9', '月', '22:05', 'ロンドン', '買', '〇', '×', '×', ''],
-    	['2017/1/9', '月', '22:10', 'ロンドン', '買', '〇', '×', '×', ''],
+    	['2017/1/9', '月', '22:10', 'ロンドン', '買', '〇', '', '×', ''],
     	['2017/1/9', '月', '22:15', 'ロンドン', '買', '〇', '×', '×', ''],
-    	['2017/1/9', '月', '22:20', 'ロンドン', '買', '〇', '×', '×', ''],
+    	['2017/1/9', '月', '22:20', 'ロンドン', '買', '〇', '', '×', ''],
     	['2017/1/9', '月', '22:25', 'ロンドン', '買', '〇', '×', '×', ''],
     	['2017/1/9', '月', '22:30', 'ロンドン', '買', '〇', '×', '×', '']
     ];
@@ -304,7 +293,7 @@ $(function () {
 
     var obj = { 
     	width: 980,
-    	height: 700,
+    	height: 600,
     	showTop: false,
     	showBottom: false,
     	stripeRows: true,
@@ -354,7 +343,7 @@ $(function () {
                 listeners: ['change']
             }
     	},
-	    { title: "rule1", width: 50, dataType: "string", align: 'center',
+	    { title: "条件①", width: 50, dataType: "string", align: 'center',
             editor: {
                 type: "textbox",
                 init: autoCompleteEditor
@@ -367,7 +356,7 @@ $(function () {
                 listeners: ['change']
             }
     	},
-	    { title: "rule2", width: 50, dataType: "string", align: 'center',
+	    { title: "条件②", width: 50, dataType: "string", align: 'center',
             editor: {
                 type: "textbox",
                 init: autoCompleteEditor
@@ -380,7 +369,7 @@ $(function () {
                 listeners: ['change']
             }
     	},
-	    { title: "rule3", width: 50, dataType: "string", align: 'center',
+	    { title: "条件③", width: 50, dataType: "string", align: 'center',
             editor: {
                 type: "textbox",
                 init: autoCompleteEditor
@@ -401,18 +390,6 @@ $(function () {
     	data: data
     };
     $pqgrid.pqGrid(obj);
-        
-    $pqgrid.on("click", ".add_btn", function() {
-    	var $tr = $(this).closest("tr"),
-        rowIndx = $pqgrid.pqGrid("getRowIndx", { $tr: $tr }).rowIndx;
-    	addRow(rowIndx + 1);
-    });
-    
-    $pqgrid.on("click", ".delete_btn", function() {
-    	var $tr = $(this).closest("tr"),
-        rowIndx = $pqgrid.pqGrid("getRowIndx", { $tr: $tr }).rowIndx;
-    	deleteRow(rowIndx);
-    });
 
 });
     
