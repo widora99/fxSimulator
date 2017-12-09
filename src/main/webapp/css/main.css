@@ -6,7 +6,6 @@ tr.pq-grid-oddRow > td{
     background:#fafafa;
 }
 
-
 .title {
 	vertical-align: top;
 	display: inline-block;
@@ -24,7 +23,11 @@ tr.pq-grid-oddRow > td{
 }
 
 .long {
-	width: 760px;
+	width: 250px;
+}
+
+.longplus {
+	width: 600px;
 }
 
 .short {
@@ -32,20 +35,14 @@ tr.pq-grid-oddRow > td{
 	width: 50px;
 }
 
-#max-trade-area {
-	position: absolute;
-	top: 83px;
-	left: 520px;
-	width: 150px;
-}
-
 #max-trade {
+	display: inline-block;
 	width: 150px;
-	height: 50px;
+	height: 45px;
 	border: solid 1px #ececec;
 	font-size: 32px;
 	text-align: center;
-	vertical-align: center;
+	vertical-align: top;
 }
 
 .win {
@@ -64,7 +61,7 @@ tr.pq-grid-oddRow > td{
 }
 
 #button_area {
-	width: 980px;
+	width: 1050px;
 	text-align: right;
 }
 
@@ -79,4 +76,5 @@ tr.pq-grid-oddRow > td{
 
 #condition {
 	resize: none;
+	width: 758px;
 }

@@ -103,13 +103,20 @@ public class SampleController {
         return filename;
     }
 
+    /**
+     * PQGridをExcel/CSV出力する
+     * @param filename
+     * @param request
+     * @param response
+     * @throws IOException
+     */
     @RequestMapping(value = "/excel", method = RequestMethod.GET)
     public void excel(String filename, HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (filename.equals("result.csv") || filename.equals("result.xml")) {
             HttpSession ses = request.getSession(true);
             String excel = (String) ses.getAttribute("excel");
                         
-            byte[] bytes = excel.getBytes(Charset.forName("UTF-8"));
+            byte[] bytes = excel.getBytes(Charset.forName("MS932"));
                     
             response.setContentType("text/plain");
             

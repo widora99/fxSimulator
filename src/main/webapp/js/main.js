@@ -3,14 +3,17 @@ $(function () {
 	// 条件名の変更を反映する
 	$("#rule1").change(function() {
 		$("#div-rule1").text($(this).val());
+		$("#grid_array table tr.pq-grid-title-row > td:nth-child(7) > div").text($(this).val());
 	});
 	
 	$("#rule2").change(function() {
 		$("#div-rule2").text($(this).val());
+		$("#grid_array table tr.pq-grid-title-row > td:nth-child(8) > div").text($(this).val());
 	});
 	
 	$("#rule3").change(function() {
 		$("#div-rule3").text($(this).val());
+		$("#grid_array table tr.pq-grid-title-row > td:nth-child(9) > div").text($(this).val());
 	});
 
 	// 表部分の値を集計してヘッダ部に反映する
@@ -22,40 +25,75 @@ $(function () {
 		var loose = [0, 0, 0];
 		var total = [0, 0, 0];
 		var totalwin = [0, 0, 0];
+		var old = ["", "", ""];
+		var rowmax = $pqrow.length;
 		
 		var daymax_count = {};
 		
-		for(row of $pqrow) {
+		// 連勝数・連敗数の初期化
+		for(var k = 1; k <= 3; k++) {
+			var $win = $("#div-rule" + k).parent().children(".head-val").text("0");
+		}
+		
+		for(var row = 0; row < rowmax; row++) {
+			var $row = $($pqrow[row]);
 			// 日付ごとの集計配列を作成
-			var key = $(row).children("td:eq(1)").text();
-			daymax_count[key] = (daymax_count[key])? daymax_count[key] + 1 : 1 ;
-			
+			var key = $row.children("td:eq(1)").text();
+			if(key !== undefined && key !== "" && key !== null) {
+				daymax_count[key] = (daymax_count[key])? daymax_count[key] + 1 : 1 ;
+			}
+							
 			// 条件ごとの連勝を集計
 			for(var j = 0; j < 3; j++) {
-				var rl = $(row).children("td:eq("+(j+6)+")").text();
+				var rl = $row.children("td:eq("+(j+6)+")").text();
+				function writeResult() {
+					// １つ上の行までの連勝／連敗を出力する
+					for(var i = 0; i < 9; i++) {
+						// 連勝数
+						var $win = $("#div-rule" + (j+1)).parent().children(".head-val:eq(" + i + ")");
+						if(old[j] != rl && win[j] == i + 2) {
+							$win.text(Number($win.text()) + 1);
+						}
+						// 連敗数
+						var $loose = $("#div-rule" + (j+1)).parent().children(".head-val:eq(" + (i + 9) + ")");
+						if(old[j] != rl && loose[j] == i + 2) {
+							$loose.text(Number($loose.text()) + 1);
+						}
+					}
+				}
+				
+				// 今の行の勝ち負けを記録
 				if(rl === "〇") {
+					writeResult();
 					win[j]++;
 					total[j]++;
 					loose[j] = 0;
 					totalwin[j]++;
+					old[j] = rl;
 				} else if(rl === "×"){
+					writeResult();
 					win[j] = 0;
 					total[j]++;
 					loose[j]++;
+					old[j] = rl;
 				}
 				
-				for(var i = 0; i < 9; i++) {
-					// 連勝数
-					var $win = $("#div-rule" + (j+1)).parent().children(".head-val:eq(" + i + ")");
-					if(win[j] == i + 2) {
-						$win.text(Number($win.text()) + 1);
-					}
-					// 連敗数
-					var $loose = $("#div-rule" + (j+1)).parent().children(".head-val:eq(" + i + 9 + ")");
-					if(loose[j] == i + 2) {
-						$loose.text(Number($loose.text()) + 1);
+				// 最終行の場合
+				if(row == rowmax - 1) {
+					for(var i = 0; i < 9; i++) {
+						// 連勝数
+						var $win = $("#div-rule" + (j+1)).parent().children(".head-val:eq(" + i + ")");
+						if(win[j] == i + 2) {
+							$win.text(Number($win.text()) + 1);
+						}
+						// 連敗数
+						var $loose = $("#div-rule" + (j+1)).parent().children(".head-val:eq(" + (i + 9) + ")");
+						if(loose[j] == i + 2) {
+							$loose.text(Number($loose.text()) + 1);
+						}
 					}
 				}
+				
 			}
 		}
 		
@@ -165,6 +203,12 @@ $(function () {
         case 5:
         case 6:
         case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13:
         	return ruleIdx;
         default:
         	return [];
@@ -205,6 +249,7 @@ $(function () {
 	    		}
     		}
     	}
+    	// ToDo: changeイベントではなくobserver使ってＤＯＭ変更時すべて実行する
     	// 集計
     	aggregate();
     }
@@ -263,36 +308,46 @@ $(function () {
     }
 	
     var data = [
-    	['2017/1/6', '金', '15:11', 'NY', '買', '〇', '×', '×', ''],
-    	['2017/1/6', '金', '15:12', 'NY', '売', '〇', '×', '×', ''],
-    	['2017/1/6', '金', '15:13', 'NY', '買', '×', '×', '×', ''],
-    	['2017/1/6', '金', '15:14', 'NY', '買', '〇', '×', '〇', ''],
-    	['2017/1/6', '金', '15:15', 'NY', '売', '×', '〇', '〇', ''],
+    	['2017/1/6', '金', '15:11', 'NY', '買', '〇', '〇', '〇', ''],
+    	['2017/1/6', '金', '15:12', 'NY', '売', '×', '〇', '〇', ''],
+    	['2017/1/6', '金', '15:13', 'NY', '買', '×', '×', '〇', ''],
+    	['2017/1/6', '金', '15:14', 'NY', '買', '×', '×', '×', ''],
+    	['2017/1/6', '金', '15:15', 'NY', '売', '〇', '〇', '〇', ''],
     	['2017/1/6', '金', '15:16', 'NY', '買', '〇', '〇', '〇', ''],
-    	['2017/1/6', '金', '15:17', 'NY', '買', '×', '×', '〇', '形汚い'],
-    	['2017/1/6', '金', '15:20', 'NY', '売', '〇', '×', '×', ''],
-    	['2017/1/6', '金', '15:21', 'NY', '売', '〇', '〇', '〇', ''],
+    	['2017/1/6', '金', '15:17', 'NY', '買', '〇', '〇', '〇', ''],
+    	['2017/1/6', '金', '15:20', 'NY', '売', '〇', '〇', '〇', ''],
+    	['2017/1/6', '金', '15:21', 'NY', '売', '×', '〇', '〇', ''],
     	['2017/1/9', '月', '21:20', 'ロンドン', '買', '×', '×', '〇', ''],
-    	['2017/1/9', '月', '21:25', 'ロンドン', '買', '〇', '〇', '×', ''],
-    	['2017/1/9', '月', '21:30', 'ロンドン', '売', '', '〇', '×', ''],
-    	['2017/1/9', '月', '21:35', 'ロンドン', '買', '〇', '〇', '〇', ''],
-    	['2017/1/9', '月', '21:40', 'ロンドン', '売', '×', '×', '〇', ''],
-    	['2017/1/9', '月', '21:45', 'ロンドン', '買', '×', '×', '×', ''],
-    	['2017/1/9', '月', '21:50', 'ロンドン', '買', '〇', '×', '×', ''],
-    	['2017/1/9', '月', '21:55', 'ロンドン', '買', '〇', '', '×', ''],
-    	['2017/1/9', '月', '22:00', 'ロンドン', '買', '〇', '', '×', ''],
-    	['2017/1/9', '月', '22:05', 'ロンドン', '買', '〇', '×', '×', ''],
-    	['2017/1/9', '月', '22:10', 'ロンドン', '買', '〇', '', '×', ''],
-    	['2017/1/9', '月', '22:15', 'ロンドン', '買', '〇', '×', '×', ''],
-    	['2017/1/9', '月', '22:20', 'ロンドン', '買', '〇', '', '×', ''],
-    	['2017/1/9', '月', '22:25', 'ロンドン', '買', '〇', '×', '×', ''],
-    	['2017/1/9', '月', '22:30', 'ロンドン', '買', '〇', '×', '×', '']
+    	['2017/1/9', '月', '21:25', 'ロンドン', '買', '×', '×', '×', ''],
+    	['2017/1/9', '月', '21:30', 'ロンドン', '売', '×', '×', '×', ''],
+    	['2017/1/9', '月', '21:35', 'ロンドン', '買', '×', '×', '×', ''],
+    	['2017/1/9', '月', '21:40', 'ロンドン', '売', '×', '×', '×', ''],
+    	['2017/1/9', '月', '21:45', 'ロンドン', '買', '', '', '', ''],
+    	['2017/1/9', '月', '21:50', 'ロンドン', '買', '〇', '〇', '〇', ''],
+    	['2017/1/9', '月', '21:55', 'ロンドン', '買', '', '', '', ''],
+    	['2017/1/9', '月', '22:00', 'ロンドン', '買', '〇', '〇', '〇', ''],
+    	['2017/1/9', '月', '22:05', 'ロンドン', '買', '〇', '〇', '〇', ''],
+    	['2017/1/9', '月', '22:10', 'ロンドン', '買', '〇', '〇', '〇', ''],
+    	['2017/1/9', '月', '22:15', 'ロンドン', '買', '〇', '〇', '〇', ''],
+    	['2017/1/9', '月', '22:20', 'ロンドン', '買', '〇', '〇', '〇', ''],
+    	['2017/1/9', '月', '22:25', 'ロンドン', '買', '〇', '〇', '〇', ''],
+    	['2017/1/9', '月', '22:30', 'ロンドン', '買', '×', '〇', '〇', ''],
+    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '×', '×', '〇', ''],
+    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '×', '×', '×', ''],
+    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '×', '×', '×', ''],
+    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '', '', '', ''],
+    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '×', '×', '×', ''],
+    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '×', '×', '×', ''],
+    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '', '', '', ''],
+    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '×', '×', '×', ''],
+    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '×', '×', '×', ''],
+    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '×', '×', '×', '']
     ];
 
 
 
     var obj = { 
-    	width: 980,
+    	width: 1050,
     	height: 600,
     	showTop: false,
     	showBottom: false,
@@ -370,6 +425,84 @@ $(function () {
             }
     	},
 	    { title: "条件③", width: 50, dataType: "string", align: 'center',
+            editor: {
+                type: "textbox",
+                init: autoCompleteEditor
+            },
+	    	filter: { 
+	    		type: 'select',
+                condition: 'equal',
+                options: ruleIdx,
+                prepend: { '': '' },
+                listeners: ['change']
+            }
+    	},
+    	{ title: "ﾌｨﾙﾀ1", width: 50, dataType: "string", align: 'center',
+            editor: {
+                type: "textbox",
+                init: autoCompleteEditor
+            },
+	    	filter: { 
+	    		type: 'select',
+                condition: 'equal',
+                options: ruleIdx,
+                prepend: { '': '' },
+                listeners: ['change']
+            }
+    	},
+    	{ title: "ﾌｨﾙﾀ2", width: 50, dataType: "string", align: 'center',
+            editor: {
+                type: "textbox",
+                init: autoCompleteEditor
+            },
+	    	filter: { 
+	    		type: 'select',
+                condition: 'equal',
+                options: ruleIdx,
+                prepend: { '': '' },
+                listeners: ['change']
+            }
+    	},
+    	{ title: "ﾌｨﾙﾀ3", width: 50, dataType: "string", align: 'center',
+            editor: {
+                type: "textbox",
+                init: autoCompleteEditor
+            },
+	    	filter: { 
+	    		type: 'select',
+                condition: 'equal',
+                options: ruleIdx,
+                prepend: { '': '' },
+                listeners: ['change']
+            }
+    	},
+    	{ title: "ﾌｨﾙﾀ4", width: 50, dataType: "string", align: 'center',
+            editor: {
+                type: "textbox",
+                init: autoCompleteEditor
+            },
+	    	filter: { 
+	    		type: 'select',
+                condition: 'equal',
+                options: ruleIdx,
+                prepend: { '': '' },
+                listeners: ['change']
+            }
+    	},
+    	{ title: "ﾌｨﾙﾀ5", width: 50, dataType: "string", align: 'center',
+            editor: {
+                type: "textbox",
+                init: autoCompleteEditor
+            },
+	    	filter: { 
+	    		type: 'select',
+                condition: 'equal',
+                options: ruleIdx,
+                prepend: { '': '' },
+                listeners: ['change']
+            }
+    	},
+    	{ title: "ﾌｨﾙﾀ6", width: 50, dataType: "string", align: 'center',
             editor: {
                 type: "textbox",
                 init: autoCompleteEditor
