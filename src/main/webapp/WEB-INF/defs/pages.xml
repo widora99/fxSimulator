@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
+	<definition name=".master" extends="defaultTemplate">
+		<put-attribute name="title" value="管理画面" />
+		<put-attribute name="page_description" value="fxSimulator" />
+		<put-attribute name="content" value="/WEB-INF/jsp/master.jsp" />
+	</definition>
 	<definition name=".main" extends="defaultTemplate">
 		<put-attribute name="title" value="検証画面" />
 		<put-attribute name="page_description" value="fxSimulator" />
 		<put-attribute name="content" value="/WEB-INF/jsp/main.jsp" />
 	</definition>
 	<definition name=".result1" extends="defaultTemplate">
-		<put-attribute name="title" value="検証結果記録画面①" />
+		<put-attribute name="title" value="記録画面①" />
 		<put-attribute name="page_description" value="fxSimulator" />
 		<put-attribute name="content" value="/WEB-INF/jsp/result1.jsp" />
 	</definition>
 	<definition name=".result2" extends="defaultTemplate">
-		<put-attribute name="title" value="検証結果記録画面②" />
+		<put-attribute name="title" value="記録画面②" />
 		<put-attribute name="page_description" value="fxSimulator" />
 		<put-attribute name="content" value="/WEB-INF/jsp/result2.jsp" />
 	</definition>

@@ -52,6 +52,20 @@ public class SampleController {
 		return json;
 	}
 */
+	
+	/**
+	 * 管理画面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(path = "/master", method = RequestMethod.GET)
+	public ModelAndView maintenance(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		ModelAndView mav = new ModelAndView("master");
+
+		return mav;
+	}
+	
 	/**
 	 * メインシミュレーション画面
 	 * 

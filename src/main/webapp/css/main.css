@@ -89,3 +89,12 @@ tr.pq-grid-oddRow > td{
 	resize: none;
 	width: 758px;
 }
+
+#master_button_area {
+	width: 400px;	
+	margin-bottom: 30px;
+}
+
+#del_btn {
+	float: right;
+}

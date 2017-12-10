@@ -3,4 +3,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div id="grid_array"></div>
 
-<c:url var="resultURL" value="/js/result1.js" /><script src="${ resultURL }"></script>
+<c:url var="resultURL" value="/js/result2.js" /><script src="${ resultURL }"></script>
