@@ -1,5 +1,7 @@
 $(function () {
 	
+	$("#result1_link").hide();
+	
 	/* 表部分の処理 */
     currencyIdx = ["USDJPY", "EURJPY", "GBPJPY", "AUDJPY", "NZDJPY", "CADJPY", "CHFJPY", "EURUSD GBPUSD", "AUDUSD", "NZDUSD", "USDCAD", "USDCHF", "EURAUD", "EURNZD", "EURCAD", "EURCHF", "EURGBP", "GBPAUD", "GBPNZD", "GBPCAD", "GBPCHF AUDNZD", "AUDCAD", "NZDCAD", "AUDCHF", "NZDCHF", "CADCHF"];
     spanIdx = ["1分足", "5分足", "15分足", "30分足", "1H足", "4H足", "日足"];
@@ -49,7 +51,7 @@ $(function () {
 
 
     var obj = { 
-    	width: 980,
+    	width: 1050,
     	height: 700,
     	showTop: false,
     	showBottom: false,
@@ -90,16 +92,28 @@ $(function () {
 	    { title: "検証期間", width: 150, dataType: "stirng", align: 'center',
     		filter: { type: 'textbox', condition: 'begin', listeners: ['keyup'] }
     	},
-	    { title: "トータル回数（回）", width: 80, dataType: "time", align: 'center',
+	    { title: "トータル回数", width: 80, dataType: "time", align: 'center',
+    		validations: [
+                { type: 'regexp', value: '^[0-9]{1,}$', msg: '半角数字で入力してください' }
+            ],
 	    	filter: { type: 'textbox', condition: 'begin', listeners: ['keyup'] }
     	},
 	    { title: "連勝数（回）", width: 80, dataType: "string", align: 'center',
+    		validations: [
+                { type: 'regexp', value: '^[0-9]{1,}$', msg: '半角数字で入力してください' }
+            ],
     		filter: { type: 'textbox', condition: 'begin', listeners: ['keyup'] }
     	},
 	    { title: "連敗数（回）", width: 80, dataType: "string", align: 'center',
+    		validations: [
+                { type: 'regexp', value: '^[0-9]{1,}$', msg: '半角数字で入力してください' }
+            ],
     		filter: { type: 'textbox', condition: 'begin', listeners: ['keyup'] }
     	},
 	    { title: "勝率（％）", width: 80, dataType: "string", align: 'center',
+    		validations: [
+                { type: 'regexp', value: '^[0-9]{1,3}$', msg: '１～３桁の半角数字で入力してください' }
+            ],
 	    	filter: { type: 'textbox', condition: 'begin', listeners: ['keyup'] }
     	},
     	{ title: "備考", width: 200, dataType: "string", 

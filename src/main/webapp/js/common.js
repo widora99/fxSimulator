@@ -26,6 +26,6 @@ $(function() {
 	});
 	
 	$("#button_area").on("click", "#exp_btn", function() {
-		$pqgrid.pqGrid("exportCsv", { url: "/sample/excel" });
+		$pqgrid.pqGrid("exportCsv", { url: "/fxSimulator/excel" });
 	});
 });

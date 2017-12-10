@@ -1,5 +1,7 @@
 $(function () {
 
+	$("#main_link").hide();
+	
 	// 条件名の変更を反映する
 	$("#rule1").change(function() {
 		$("#div-rule1").text($(this).val());
@@ -249,9 +251,6 @@ $(function () {
 	    		}
     		}
     	}
-    	// ToDo: changeイベントではなくobserver使ってＤＯＭ変更時すべて実行する
-    	// 集計
-    	aggregate();
     }
     
     // セレクト式エディタ
@@ -355,8 +354,7 @@ $(function () {
     	scrollModel: { autoFit: true },
     	selectionModel: { type: 'cell' },
         filterModel: { on: true, mode: "AND", header: true },
-        change: gridChanged,
-        create: aggregate
+        change: gridChanged
     };
     obj.colModel = [
     	{ title: "日付", width: 200, dataType: "date", align: 'center',
@@ -523,6 +521,24 @@ $(function () {
     	data: data
     };
     $pqgrid.pqGrid(obj);
+    
+    //オブザーバーの作成
+    const observer = new MutationObserver(records => {
+        // 集計処理を実行
+        aggregate();
+    });
+
+    //監視オプションの作成
+    const options = {
+    	childList: true,
+    	attributes: true
+    };
+
+    //監視の開始
+    observer.observe($pqgrid[0], options);
+    
+    // 初回集計
+    aggregate();
 
 });
     

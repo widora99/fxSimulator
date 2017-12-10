@@ -60,13 +60,24 @@ tr.pq-grid-oddRow > td{
 	background-color: #ffffff;
 }
 
+#link_area {
+	display: inline-block;
+	margin-top: 5px;
+	width: 500px;
+}
+
+#link_area button {
+	margin-left: 5px;
+}
+
 #button_area {
-	width: 1050px;
+	display: inline-block;
+	margin-top: 5px;
+	width: 550px;
 	text-align: right;
 }
 
 #button_area button {
-	margin-top: 5px;
 	margin-right: 5px;
 }
 
