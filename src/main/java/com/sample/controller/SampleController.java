@@ -2,45 +2,20 @@ package com.sample.controller;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.List;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.gson.Gson;
-import com.sample.entity.UserEntity;
-import com.sample.entity.repository.UserRepositoryManager;
-
 @Controller
 public class SampleController {
-
-	@Autowired
-	private UserRepositoryManager sampleRepositoryManager ; 
-	
-	/**
-	 * userテーブルのデータを返す
-	 * 
-	 * @return
-	 *
-	 */
-	@RequestMapping(path = "/user", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-	@ResponseBody
-	public String getUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-		List<UserEntity> se = sampleRepositoryManager.getSamples();
-		Gson gson = new Gson();
-		
-		return gson.toJson(se);
-	}
 	
 	/**
 	 * 管理画面
