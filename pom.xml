@@ -8,7 +8,7 @@
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>fxSimulator</name>
-	<url>https://sample.com</url>
+	<url>https://fxSimulator.com</url>
 
 
 	<properties>
@@ -18,7 +18,7 @@
 		<spring-test-dbunit.version>1.2.1</spring-test-dbunit.version>
 		<hibernate.properties>system.properties</hibernate.properties>
 		<hibernate.maven.plugin.version>3.6.10.Final</hibernate.maven.plugin.version>
-		<hibernate.hbm2ddl.sqlfile>sample_ddl.sql</hibernate.hbm2ddl.sqlfile>
+		<hibernate.hbm2ddl.sqlfile>fxdb_ddl.sql</hibernate.hbm2ddl.sqlfile>
 		<aspectjweaver>${settings.localRepository}/org/springframework/spring-instrument/4.2.2.RELEASE/spring-instrument-4.2.2.RELEASE.jar</aspectjweaver>
 	</properties>
 
