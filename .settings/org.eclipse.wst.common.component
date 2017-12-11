@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-modules id="moduleCoreId" project-version="2.0">
-  <wb-module deploy-name="sample">
-    <property name="context-root" value="sample"/>
+  <wb-module deploy-name="fxSimulator">
+    <property name="context-root" value="fxSimulator"/>
     <wb-resource deploy-path="/" source-path="src/main/webapp"/>
     <property name="java-output-path" value="/target/classes"/>
     <dependent-module archiveName="spring-context-4.2.2.RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/springframework/spring-context/4.2.2.RELEASE/spring-context-4.2.2.RELEASE.jar">

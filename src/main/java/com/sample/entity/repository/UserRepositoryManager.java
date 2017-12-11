@@ -9,16 +9,16 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
-import com.sample.entity.SampleEntity;
+import com.sample.entity.UserEntity;
 
 @Repository
-public class SampleRepositoryManager {
+public class UserRepositoryManager {
 	
 	@PersistenceContext(name = "gitWidgetPersistenceUnit")
 	private EntityManager em;
 
 	@Transactional
-	public void persist(SampleEntity sEntity) {
+	public void persist(UserEntity sEntity) {
 
 		em.persist(sEntity);
 
@@ -29,13 +29,13 @@ public class SampleRepositoryManager {
 	 * 
 	 * @return
 	 */
-	public List<SampleEntity> getSamples() {
+	public List<UserEntity> getSamples() {
 
-		String sqlString = "select * from sample order by id desc";
-		Query q = em.createNativeQuery(sqlString, SampleEntity.class);
+		String sqlString = "select * from user order by id desc";
+		Query q = em.createNativeQuery(sqlString, UserEntity.class);
 
 		@SuppressWarnings("unchecked")
-		List<SampleEntity> samples = (List<SampleEntity>) q.getResultList();
+		List<UserEntity> samples = (List<UserEntity>) q.getResultList();
 
 		return samples;
 	}

@@ -2,6 +2,7 @@ package com.sample.controller;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -15,43 +16,31 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.sample.entity.repository.SampleRepositoryManager;
+import com.google.gson.Gson;
+import com.sample.entity.UserEntity;
+import com.sample.entity.repository.UserRepositoryManager;
 
 @Controller
 public class SampleController {
 
 	@Autowired
-	private SampleRepositoryManager sampleRepositoryManager ; 
-/*	
+	private UserRepositoryManager sampleRepositoryManager ; 
+	
 	/**
-	 * mavレスポンスンのサンプル
+	 * userテーブルのデータを返す
 	 * 
 	 * @return
 	 *
-	@RequestMapping(path = "/sample/db", method = RequestMethod.GET)
-	public ModelAndView mavSample(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-		ModelAndView mav = new ModelAndView("sample");
-		List<SampleEntity> se = sampleRepositoryManager.getSamples();
-		mav.addObject("sample", se.get(0));
-
-		return mav;
-	}
-
-
-	/**
-	 * jsonレスポンスのサンプル
-	 * 
-	 * @param val
-	 *
-	@RequestMapping(path = "/sample/{val}/**", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+	 */
+	@RequestMapping(path = "/user", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	@ResponseBody
-	public String jsonSample(@PathVariable() String val) throws Exception {
+	public String getUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		String json = "{\"data\": \"hoge\"}";
-		return json;
+		List<UserEntity> se = sampleRepositoryManager.getSamples();
+		Gson gson = new Gson();
+		
+		return gson.toJson(se);
 	}
-*/
 	
 	/**
 	 * 管理画面
