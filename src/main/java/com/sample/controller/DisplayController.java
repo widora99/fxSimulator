@@ -11,11 +11,57 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class DisplayController {
+	
+	/**
+	 * ログイン画面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(path = "/login", method = RequestMethod.GET)
+	public ModelAndView login(
+			@RequestParam(name = "status", required = false) String status,
+			HttpServletRequest request, 
+			HttpServletResponse response) throws Exception {
+
+		ModelAndView mav = new ModelAndView("login");
+		if("error".equals(status)) {
+			mav.addObject("msg", "IDかパスワードが間違っています");
+		}
+
+		return mav;
+	}
+	
+	/**
+	 * ログイン認証
+	 * 
+	 * @return
+	 */
+	@RequestMapping(path = "/login", method = RequestMethod.POST)
+	public String loginAuth(
+			HttpServletRequest request, 
+			HttpServletResponse response) throws Exception {
+
+		return "redirect:/main";
+	}
+	
+	/**
+	 * エラー画面
+	 * 
+	 * @return
+	 */
+	@RequestMapping(path = "/error", method = RequestMethod.GET)
+	public ModelAndView error(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		ModelAndView mav = new ModelAndView("error");
+
+		return mav;
+	}
 	
 	/**
 	 * 管理画面

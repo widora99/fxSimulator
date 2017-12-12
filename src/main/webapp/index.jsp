@@ -12,10 +12,13 @@
 	</head>
 	<body>
 		<div id="loginarea">
-			<div><span class="login_title">FX検証システム</span></div>
-			<div><input id="userid" type="text" placeholder="id"></div>
-			<div><input id="password" type="password" placeholder="password"></div>
-			<div><a href="main"><button class="btn btn-info">Login</button></a></div>
+			<form action="/fxSimulator/login" method="POST">
+				<div><span class="login_title">FX検証システム</span></div>
+				<div><input id="userid" type="text" placeholder="id" name="userid"></div>
+				<div><input id="password" type="password" placeholder="password" name="password"></div>
+				<div><a href="main"><button type="submit" class="btn btn-info">Login</button></a></div>
+				<div><span class="errmsg">${ msg }</span></div>
+			</form>
 		</div>
 	</body>
 </html>

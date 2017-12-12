@@ -28,3 +28,7 @@ body {
 	margin-top: 5px;
 	width: 180px;
 }
+
+.errmsg {
+	color: #ff0000;
+}
