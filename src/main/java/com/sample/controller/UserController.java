@@ -18,7 +18,7 @@ import com.sample.entity.UserEntity;
 import com.sample.entity.repository.UserRepositoryManager;
 
 @Controller
-public class DbController {
+public class UserController {
 
 	@Autowired
 	private UserRepositoryManager usermanager ; 

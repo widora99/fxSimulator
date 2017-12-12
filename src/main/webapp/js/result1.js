@@ -1,6 +1,6 @@
 $(function () {
 	
-	$("#result1_link").hide();
+	$("#result1_link").remove();
 	
 	/* 表部分の処理 */
     currencyIdx = ["USDJPY", "EURJPY", "GBPJPY", "AUDJPY", "NZDJPY", "CADJPY", "CHFJPY", "EURUSD GBPUSD", "AUDUSD", "NZDUSD", "USDCAD", "USDCHF", "EURAUD", "EURNZD", "EURCAD", "EURCHF", "EURGBP", "GBPAUD", "GBPNZD", "GBPCAD", "GBPCHF AUDNZD", "AUDCAD", "NZDCAD", "AUDCHF", "NZDCHF", "CADCHF"];

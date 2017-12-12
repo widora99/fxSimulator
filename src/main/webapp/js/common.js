@@ -1,4 +1,7 @@
 $(function() {
+	if(auth != "ROLE_ADMIN") {
+		$("#master_link").remove();
+	}
 	
 	function addRow(rowIndx) {
         var rowData = []; //empty row template

@@ -1,6 +1,6 @@
 $(function () {
 
-	$("#main_link").hide();
+	$("#main_link").remove();
 	
 	// 条件名の変更を反映する
 	$("#rule1").change(function() {

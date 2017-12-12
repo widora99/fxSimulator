@@ -1,6 +1,7 @@
 $(function () {
-
-	$("#button_area").hide();
+	
+	$("#master_link").remove();
+	$("#button_area").remove();
 	
 	
 	/* 表部分の処理 */

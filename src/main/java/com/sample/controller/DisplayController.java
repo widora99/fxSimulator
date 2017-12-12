@@ -2,12 +2,16 @@ package com.sample.controller;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -83,8 +87,13 @@ public class DisplayController {
 	 */
 	@RequestMapping(path = "/main", method = RequestMethod.GET)
 	public ModelAndView mainSimulate(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String role = auth.getAuthorities().stream()
+	        .map(GrantedAuthority::getAuthority)
+	        .collect(Collectors.joining("\n  "));
+		
 		ModelAndView mav = new ModelAndView("main");
+		mav.addObject("auth", role);
 
 		return mav;
 	}

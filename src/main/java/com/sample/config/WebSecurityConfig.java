@@ -31,9 +31,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		
+		String[] adminonly = {"/master", "/user**"};
+		
 		http.authorizeRequests().antMatchers("/", "/login", "/error")
 		.permitAll() // 認証なしでもOK
-		.antMatchers("/master").hasRole(ROLE_ADMIN) // adminユーザのみ(DB値のROLE_を除いた部分と一致)
+		.antMatchers(adminonly).hasRole(ROLE_ADMIN) // adminユーザのみ(DB値のROLE_を除いた部分と一致)
 		.anyRequest().authenticated(); // それ以外は認証があればOK
 		
 		http.csrf().disable().formLogin()
