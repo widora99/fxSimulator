@@ -50,7 +50,7 @@ public class DbController {
 	public String updUser(
 			@PathVariable() String command,
 			@RequestParam(name = "id", required = true) String id,
-			@RequestParam(name = "pass", required = true) String pass,
+			@RequestParam(name = "pass", required = false) String pass,
 			@RequestParam(name = "name", required = false) String name,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 

@@ -31,13 +31,13 @@ $(function () {
         filterModel: { on: true, mode: "AND", header: true }
     };
     obj.colModel = [
-	    { title: "ユーザＩＤ", width: 200, dataType: "stirng", align: 'center', editable: false,
+	    { title: "ユーザＩＤ", width: 200, dataType: "stirng", dataIndx: "id", align: 'center', editable: false,
     		filter: { type: 'textbox', condition: 'begin', listeners: ['keyup'] }
     	},
-	    { title: "パスワード", width: 200, dataType: "string", align: 'center', editable: false,
+	    { title: "パスワード", width: 200, dataType: "string", dataIndx: "password", align: 'center', editable: false,
 	    	filter: { type: 'textbox', condition: 'begin', listeners: ['keyup'] }
     	},
-	    { title: "氏名", width: 250, dataType: "string", align: 'center', editable: false,
+	    { title: "氏名", width: 250, dataType: "string", dataIndx: "name", align: 'center', editable: false,
     		filter: { type: 'textbox', condition: 'begin', listeners: ['keyup'] }
     	},
     	{ title: "選択", width: 30, dataType: "string", align: 'center', editable: false, render:
@@ -46,10 +46,59 @@ $(function () {
             }
     	}
 	];
-    obj.dataModel = {
-        	data: data
-        };
-    $pqgrid.pqGrid(obj);
-
+    
+    // userテーブルのデータを取得してから表示
+    ajaxCall("/user", "GET", null, function(res) {
+    	obj.dataModel = {
+            	data: res
+            };
+        $pqgrid.pqGrid(obj);
+    });
+    
+    $("#delete_btn").click(function() {
+    	$selected = $("input[type=radio]:checked").closest("tr").children("td:eq(1)");
+    	// 確認メッセージ
+    	if(!confirm($selected.text() + "を削除します。よろしいですか？")) {
+    		return false;
+    	}
+    	var data = {
+    		id: $selected.text()
+    	}
+    	ajaxCall("/user/del", "POST", data, function(res) {
+    		if(res.result == "ok") {
+    			alert("削除しました");
+    		} else {
+    			alert("削除に失敗しました");
+    		}
+    		// 画面を更新
+    		location.reload();
+    	})
+    });
+    
+    $("#repair_btn").click(function() {
+    	var $selected = $("input[type=radio]:checked").closest("tr").children("td:eq(1)");
+    	if($selected.text() != $("#u-id").val()) {
+    		alert("ユーザIDは変更できません");
+    		return false;
+    	}  	
+    	// 確認メッセージ
+    	if(!confirm($selected.text() + "を更新します。よろしいですか？")) {
+    		return false;
+    	}
+    	var data = {
+    		id: $("#u-id").val(),
+    		pass: $("#pass").val(),
+    		name: $("#name").val()
+    	};
+    	ajaxCall("/user/upd", "POST", data, function(res) {
+    		if(res.result == "ok") {
+    			alert("更新しました");
+    		} else {
+    			alert("更新に失敗しました");
+    		}
+    		// 画面を更新
+    		location.reload();
+    	});
+    });
 });
     

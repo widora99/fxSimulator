@@ -11,7 +11,7 @@
 		<div><div class="title">氏名</div><input type="text" id="name" class="head-val long" maxlength=20></input>
 	</div>
 </div>
-<div id="master_button_area"><button id="new_btn" class="btn btn-success">新規</button><button id="repair_btn" class="btn btn-warning">修正</button><button id="del_btn" class="btn btn-danger">削除</button></div>
+<div id="master_button_area"><button id="new_btn" class="btn btn-success">新規</button><button id="repair_btn" class="btn btn-warning">修正</button><button id="delete_btn" class="btn btn-danger">削除</button></div>
 
 <div id="grid_array"></div>
 

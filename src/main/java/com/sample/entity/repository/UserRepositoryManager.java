@@ -14,7 +14,7 @@ import com.sample.entity.UserEntity;
 @Repository
 public class UserRepositoryManager {
 	
-	@PersistenceContext(name = "gitWidgetPersistenceUnit")
+	@PersistenceContext(name = "PersistenceUnit")
 	private EntityManager em;
 
 	@Transactional
@@ -55,8 +55,7 @@ public class UserRepositoryManager {
 	@Transactional
 	public String updateUser(String id, String pass, String name) {
 		
-		UserEntity user = new UserEntity();
-		user.setId(id);
+		UserEntity user = em.find(UserEntity.class, id);
 		user.setPassword(pass);
 		user.setName(name);
 		em.merge(user);
@@ -67,9 +66,8 @@ public class UserRepositoryManager {
 	@Transactional
 	public String deleteUser(String id) {
 		
-		UserEntity user = new UserEntity();
-		user.setId(id);
-		em.remove(id);;
+		UserEntity user = em.find(UserEntity.class, id);
+		em.remove(user);
 		
 		return "{\"result\": \"ok\"}";
 	}

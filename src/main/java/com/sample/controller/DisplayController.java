@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class SampleController {
+public class DisplayController {
 	
 	/**
 	 * 管理画面

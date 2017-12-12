@@ -13,6 +13,12 @@ $(function() {
 
     }
 	
+    $("#button_area").on("click", "#clear_btn", function() {
+		$pqgrid.find(".pq-grid-cell").each(function() {
+			$(this).text("");
+		});
+	});
+    
 	$("#button_area").on("click", "#add_btn", function() {
 		var $tr = $pqgrid.find(".pq-cell-select").closest("tr"),
 	    rowIndx = $pqgrid.pqGrid("getRowIndx", { $tr: $tr }).rowIndx;
@@ -29,3 +35,37 @@ $(function() {
 		$pqgrid.pqGrid("exportCsv", { url: "/fxSimulator/excel" });
 	});
 });
+
+function ajaxCall(uri, method, data, func, errfunc) {
+	$.ajaxSetup({
+    	scriptCharset: 'utf-8'
+    });
+    $.ajax({
+    	type: method,
+    	url : "/fxSimulator" + uri,
+    	timeout: 10000,
+    	cache: true,
+    	data: data,
+    	beforeSend: function(jqXHR) {
+    		return true;
+    	},
+    }).done(function(res, status, jqXHR) {
+    	func(res, status, jqXHR);
+    }).fail(function(jqXHR, status, errorThrown) {
+    	if(errfunc !== undefined) {
+    		errfunc(jqXHR, status, errorThrown);
+    	} else {
+	    	if(jqXHR.responseText != undefined) {
+	    		if(status == "timeout") {
+	    			alert("タイムアウト");
+		    	} else {
+		    		alert("失敗しました");
+		    		console.log(jqXHR.responseText);
+		    	}
+	    	} else {
+	    		alert("失敗しました");
+	    		console.log(errorThrown);
+	    	}
+    	}
+    });
+}
