@@ -25,12 +25,12 @@ public class DisplayController {
 	 */
 	@RequestMapping(path = "/login", method = RequestMethod.GET)
 	public ModelAndView login(
-			@RequestParam(name = "status", required = false) String status,
+			@RequestParam(name = "error", required = false) String error,
 			HttpServletRequest request, 
 			HttpServletResponse response) throws Exception {
 
 		ModelAndView mav = new ModelAndView("login");
-		if("error".equals(status)) {
+		if (error != null) {
 			mav.addObject("msg", "IDかパスワードが間違っています");
 		}
 
