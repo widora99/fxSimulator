@@ -37,6 +37,10 @@ $(function() {
 	$("#button_area").on("click", "#exp_btn", function() {
 		$pqgrid.pqGrid("exportCsv", { url: "/fxSimulator/excel" });
 	});
+	
+	$("#logout_btn").click(function() {
+		location.href = "/fxSimulator/logout";
+	});
 });
 
 function ajaxCall(uri, method, data, func, errfunc) {

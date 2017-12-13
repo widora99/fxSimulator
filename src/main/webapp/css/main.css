@@ -99,3 +99,10 @@ tr.pq-grid-oddRow > td{
 	float: right;
 }
 
+#logout_btn {
+	margin-top: 5px;
+}
+
+.error {
+	background-color: #ff0000;
+}

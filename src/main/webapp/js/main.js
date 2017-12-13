@@ -62,6 +62,15 @@ $(function () {
 							$loose.text(Number($loose.text()) + 1);
 						}
 					}
+					// 10連勝以上は10連勝にカウント
+					if(old[j] != rl && win[j] > 10) {
+						var $win10 = $("#div-rule" + (j+1)).parent().children(".head-val:eq(8)");
+						$win10.text(Number($win10.text()) + 1);
+					}
+					if(old[j] != rl && loose[j] > 10) {
+						var $loose10 = $("#div-rule" + (j+1)).parent().children(".head-val:eq(17)");
+						$loose10.text(Number($loose10.text()) + 1);
+					}
 				}
 				
 				// 今の行の勝ち負けを記録
@@ -123,7 +132,7 @@ $(function () {
     dateIdx = ["日", "月", "火", "水", "木", "金", "土"];
     ruleIdx = ["〇", "×"];
     sellIdx = ["売", "買"];
-    marketIdx = ["アジア", "NY", "ロンドン"];
+    marketIdx = ["アジア", "NY", "ロンドン", "その他"];
     
 	$pqgrid = $("#grid_array");
 	// datepickerを日本語化する
@@ -231,6 +240,8 @@ $(function () {
     			return "ロンドン";
     		} else if(num >= 14 && num < 21) {
     			return "NY";
+    		} else {
+    			return "その他";
     		}
     	}
     	return "";
@@ -359,6 +370,9 @@ $(function () {
     obj.colModel = [
     	{ title: "日付", width: 200, dataType: "date", align: 'center',
     		editor: { type: 'textbox', init: dateEditor },
+    		validations: [
+                { type: 'regexp', value: '^[0-9]{1,4}/[0-9]{1,2}/[0-9]{1,2}$', msg: 'yyyy/MM/dd' }
+            ],
     		filter: { type: 'textbox', condition: "between", init: pqDatePicker, listeners: ['change'] }
     	},
 	    { title: "曜日", width: 50, dataType: "stirng", align: 'center', editable: false,
@@ -371,6 +385,9 @@ $(function () {
             }
     	},
 	    { title: "時間", width: 100, dataType: "time", align: 'center', render: formatTime,
+    		validations: [
+                { type: 'regexp', value: '^[0-9]{1,2}:{0,1}[0-9]{1,2}$', msg: 'HH:mm形式で入力してください' }
+            ],
 	    	filter: { type: 'textbox', condition: 'begin', listeners: ['keyup'] }
     	},
 	    { title: "市場", width: 120, dataType: "string", align: 'center', editable: false,
@@ -540,5 +557,42 @@ $(function () {
     // 初回集計
     aggregate();
 
+    
+    $("#save_btn").click(function() {
+    	var data = [];
+    	var $pqrow = $pqgrid.find(".pq-grid-table:eq(1)").find(".pq-grid-row");
+    	for(var row of $pqrow) {
+    		var main = {};
+    		main["id"] = $(row).children("td:eq(1)").text();
+    		main["time"] = $(row).children("td:eq(3)").text();
+    		main["sell"] = $(row).children("td:eq(5)").text();
+    		main["rule1"] = $(row).children("td:eq(6)").text();
+    		main["rule2"] = $(row).children("td:eq(7)").text();
+    		main["rule3"] = $(row).children("td:eq(8)").text();
+    		main["filter1"] = $(row).children("td:eq(9)").text();
+    		main["filter2"] = $(row).children("td:eq(10)").text();
+    		main["filter3"] = $(row).children("td:eq(11)").text();
+    		main["filter4"] = $(row).children("td:eq(12)").text();
+    		main["filter5"] = $(row).children("td:eq(13)").text();
+    		main["filter6"] = $(row).children("td:eq(13)").text();
+    		main["memo"] = $(row).children("td:eq(13)").text();
+    		if(main["memo"].length > 100) {
+    			alert("備考が長すぎます");
+    			$(row).children("td:eq(13)").addClass("error");
+    			return false;
+    		}
+    		data.push(main);
+    	}
+    	ajaxCall("/main/save", "POST", data, function(res) {
+    		if(res.result == "ok") {
+    			alert("保存しました");
+    		} else {
+    			alert("保存に失敗しました");
+    		}
+    		// 画面を更新
+    		location.reload();
+    	})
+    });
+    
 });
     

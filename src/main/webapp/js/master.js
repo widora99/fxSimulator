@@ -58,6 +58,10 @@ $(function () {
     
     $("#delete_btn").click(function() {
     	$selected = $("input[type=radio]:checked").closest("tr").children("td:eq(1)");
+    	if($selected.text() != "admin") {
+    		alert("adminは削除できません");
+    		return false;
+    	}
     	// 確認メッセージ
     	if(!confirm($selected.text() + "を削除します。よろしいですか？")) {
     		return false;
@@ -96,6 +100,25 @@ $(function () {
     			alert("更新しました");
     		} else {
     			alert("更新に失敗しました");
+    		}
+    		// 画面を更新
+    		location.reload();
+    	});
+    });
+    
+    $("#new_btn").click(function() {
+    	var $selected = $("input[type=radio]:checked").closest("tr").children("td:eq(1)");
+    	
+    	var data = {
+    		id: $("#u-id").val(),
+    		pass: $("#pass").val(),
+    		name: $("#name").val()
+    	};
+    	ajaxCall("/user/add", "POST", data, function(res) {
+    		if(res.result == "ok") {
+    			alert("ユーザを作成しました");
+    		} else {
+    			alert("ユーザの作成に失敗しました");
     		}
     		// 画面を更新
     		location.reload();
