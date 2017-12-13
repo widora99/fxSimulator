@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,10 +33,16 @@ public class DisplayController {
 			@RequestParam(name = "error", required = false) String error,
 			HttpServletRequest request, 
 			HttpServletResponse response) throws Exception {
-
-		ModelAndView mav = new ModelAndView("login");
-		if (error != null) {
-			mav.addObject("msg", "IDかパスワードが間違っています");
+		
+		ModelAndView mav = null;
+		try {
+			 mav = new ModelAndView("login");
+			if (error != null) {
+				mav.addObject("msg", "IDかパスワードが間違っています");
+			}
+		} catch(Exception e) {
+			Logger log = Logger.getLogger("FxAppender");
+			log.error("エラー", e);
 		}
 
 		return mav;
