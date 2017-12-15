@@ -4,7 +4,7 @@ $(function() {
 	}
 	
 	function addRow(rowIndx) {
-        var rowData = []; //empty row template
+        var rowData = {}; //empty row template
         //var rownum = $pqgrid.find("table:eq(2)").find("tr").length;
         $pqgrid.pqGrid("addRow", { rowIndxPage: rowIndx, rowData: rowData });
     }
@@ -38,9 +38,6 @@ $(function() {
 		$pqgrid.pqGrid("exportCsv", { url: "/fxSimulator/excel" });
 	});
 	
-	$("#logout_btn").click(function() {
-		location.href = "/fxSimulator/logout";
-	});
 });
 
 function ajaxCall(uri, method, data, func, errfunc) {

@@ -119,7 +119,7 @@ $(function () {
 		}
 		var max = 0;
 		for(var key in daymax_count) {
-			if(max < daymax_count[key]) {
+			if(key.trim() != "" && max < daymax_count[key]) {
 				max = daymax_count[key];
 			}
 		}
@@ -139,18 +139,18 @@ $(function () {
 	$.datepicker.setDefaults( $.datepicker.regional[ "ja" ] );
 	
 	
-	function addRow(rowIndx) {
-        var rowData = ["", "", "", "", "", "", "", "", ""]; //empty row template
-        //var rownum = $pqgrid.find("table:eq(2)").find("tr").length;
-        $pqgrid.pqGrid("addRow", { rowIndxPage: rowIndx, rowData: rowData });
-    }
-    //called by delete button.
-    function deleteRow(rowIndx) {
-        $pqgrid.pqGrid("addClass", { rowIndx: rowIndx, cls: 'pq-row-delete' });
-        var rowData = $pqgrid.pqGrid("getRowData", { rowIndx: rowIndx });
-        $pqgrid.pqGrid("deleteRow", { rowIndx: rowIndx, effect: true });
-
-    }
+//	function addRow(rowIndx) {
+//        var rowData = {}; //empty row template
+//        //var rownum = $pqgrid.find("table:eq(2)").find("tr").length;
+//        $pqgrid.pqGrid("addRow", { rowIndxPage: rowIndx, rowData: rowData });
+//    }
+//    //called by delete button.
+//    function deleteRow(rowIndx) {
+//        $pqgrid.pqGrid("addClass", { rowIndx: rowIndx, cls: 'pq-row-delete' });
+//        var rowData = $pqgrid.pqGrid("getRowData", { rowIndx: rowIndx });
+//        $pqgrid.pqGrid("deleteRow", { rowIndx: rowIndx, effect: true });
+//
+//    }
 	
 	// 時刻を[:]つきにする
     function formatTime(ui) {
@@ -188,7 +188,7 @@ $(function () {
         $this
             .css({ zIndex: 3, position: "relative" })
             .datepicker({
-                yearRange: "-20:+0", //20 years prior to present.
+                yearRange: "-5:+5", //20 years prior to present.
                 changeYear: true,
                 changeMonth: true,
                 //showButtonPanel: true,
@@ -205,21 +205,21 @@ $(function () {
     // 列と配列の紐づけを指定
     function idxSelector(idx) {
     	switch(idx) {
-        case 1:
+        case "day":
         	return dateIdx;
-    	case 3:
+    	case "market":
         	return marketIdx;
-        case 4:
+        case "sell":
         	return sellIdx;
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-        case 10:
-        case 11:
-        case 12:
-        case 13:
+        case "rule1":
+        case "rule2":
+        case "rule3":
+        case "filter1":
+        case "filter2":
+        case "filter3":
+        case "filter4":
+        case "filter5":
+        case "filter6":
         	return ruleIdx;
         default:
         	return [];
@@ -252,10 +252,10 @@ $(function () {
     	// 変更されたすべての行に対して実行
     	for(var row of ui.rowList) {
     		if(row.newRow !== undefined) {
-	    		var time = row.newRow[2];
+	    		var time = row.newRow["time"];
 	    		// 時刻が変更されていれば市場を選択しなおす
 	    		if(time !== undefined) {
-	    			var cell = $pqgrid.pqGrid( "getCell", { rowIndx: row.rowIndx, dataIndx: 3 } );
+	    			var cell = $pqgrid.pqGrid( "getCell", { rowIndx: row.rowIndx, dataIndx: "market" } );
 	    			if(cell !== null && cell !== undefined) {
 	    				cell.text(marketSelector(time));
 	    			}
@@ -312,48 +312,10 @@ $(function () {
             onClose: function (evt, ui) {
                 this.focus();
                 var daystr = dateIdx[new Date(this.value).getDay()];
-                $pqgrid.pqGrid( "getCell", { rowIndx: rowidx, dataIndx: dataidx + 1 } ).text(daystr);
+                $pqgrid.pqGrid( "getCell", { rowIndx: rowidx, dataIndx: "day" } ).text(daystr);
             }
         });
     }
-	
-    var data = [
-    	['2017/1/6', '金', '15:11', 'NY', '買', '〇', '〇', '〇', ''],
-    	['2017/1/6', '金', '15:12', 'NY', '売', '×', '〇', '〇', ''],
-    	['2017/1/6', '金', '15:13', 'NY', '買', '×', '×', '〇', ''],
-    	['2017/1/6', '金', '15:14', 'NY', '買', '×', '×', '×', ''],
-    	['2017/1/6', '金', '15:15', 'NY', '売', '〇', '〇', '〇', ''],
-    	['2017/1/6', '金', '15:16', 'NY', '買', '〇', '〇', '〇', ''],
-    	['2017/1/6', '金', '15:17', 'NY', '買', '〇', '〇', '〇', ''],
-    	['2017/1/6', '金', '15:20', 'NY', '売', '〇', '〇', '〇', ''],
-    	['2017/1/6', '金', '15:21', 'NY', '売', '×', '〇', '〇', ''],
-    	['2017/1/9', '月', '21:20', 'ロンドン', '買', '×', '×', '〇', ''],
-    	['2017/1/9', '月', '21:25', 'ロンドン', '買', '×', '×', '×', ''],
-    	['2017/1/9', '月', '21:30', 'ロンドン', '売', '×', '×', '×', ''],
-    	['2017/1/9', '月', '21:35', 'ロンドン', '買', '×', '×', '×', ''],
-    	['2017/1/9', '月', '21:40', 'ロンドン', '売', '×', '×', '×', ''],
-    	['2017/1/9', '月', '21:45', 'ロンドン', '買', '', '', '', ''],
-    	['2017/1/9', '月', '21:50', 'ロンドン', '買', '〇', '〇', '〇', ''],
-    	['2017/1/9', '月', '21:55', 'ロンドン', '買', '', '', '', ''],
-    	['2017/1/9', '月', '22:00', 'ロンドン', '買', '〇', '〇', '〇', ''],
-    	['2017/1/9', '月', '22:05', 'ロンドン', '買', '〇', '〇', '〇', ''],
-    	['2017/1/9', '月', '22:10', 'ロンドン', '買', '〇', '〇', '〇', ''],
-    	['2017/1/9', '月', '22:15', 'ロンドン', '買', '〇', '〇', '〇', ''],
-    	['2017/1/9', '月', '22:20', 'ロンドン', '買', '〇', '〇', '〇', ''],
-    	['2017/1/9', '月', '22:25', 'ロンドン', '買', '〇', '〇', '〇', ''],
-    	['2017/1/9', '月', '22:30', 'ロンドン', '買', '×', '〇', '〇', ''],
-    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '×', '×', '〇', ''],
-    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '×', '×', '×', ''],
-    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '×', '×', '×', ''],
-    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '', '', '', ''],
-    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '×', '×', '×', ''],
-    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '×', '×', '×', ''],
-    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '', '', '', ''],
-    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '×', '×', '×', ''],
-    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '×', '×', '×', ''],
-    	['2017/1/10', '火', '22:35', 'ロンドン', '買', '×', '×', '×', '']
-    ];
-
 
 
     var obj = { 
@@ -368,14 +330,14 @@ $(function () {
         change: gridChanged
     };
     obj.colModel = [
-    	{ title: "日付", width: 200, dataType: "date", align: 'center',
+    	{ title: "日付", width: 200, dataType: "date", dataIndx: "date", align: 'center',
     		editor: { type: 'textbox', init: dateEditor },
-    		validations: [
-                { type: 'regexp', value: '^[0-9]{1,4}/[0-9]{1,2}/[0-9]{1,2}$', msg: 'yyyy/MM/dd' }
-            ],
+//    		validations: [
+//                { type: 'regexp', value: '^[0-9]{0,4}/{0,1}[0-9]{0,2}/{0,1}[0-9]{0,2}$', msg: 'yyyy/MM/dd形式で入力してください' }
+//            ],
     		filter: { type: 'textbox', condition: "between", init: pqDatePicker, listeners: ['change'] }
     	},
-	    { title: "曜日", width: 50, dataType: "stirng", align: 'center', editable: false,
+	    { title: "曜日", width: 50, dataType: "stirng", dataIndx: "day", align: 'center', editable: false,
 	    	filter: { 
 	    		type: 'select',
                 condition: 'equal',
@@ -384,13 +346,13 @@ $(function () {
                 listeners: ['change']
             }
     	},
-	    { title: "時間", width: 100, dataType: "time", align: 'center', render: formatTime,
-    		validations: [
-                { type: 'regexp', value: '^[0-9]{1,2}:{0,1}[0-9]{1,2}$', msg: 'HH:mm形式で入力してください' }
-            ],
+	    { title: "時間", width: 100, dataType: "string", dataIndx: "time", align: 'center', render: formatTime,
+//    		validations: [
+//                { type: 'regexp', value: '^[0-9]{0,2}:{0,1}[0-9]{0,2}$', msg: 'HH:mm形式で入力してください' }
+//            ],
 	    	filter: { type: 'textbox', condition: 'begin', listeners: ['keyup'] }
     	},
-	    { title: "市場", width: 120, dataType: "string", align: 'center', editable: false,
+	    { title: "市場", width: 120, dataType: "string", dataIndx: "market", align: 'center', editable: false,
 	    	filter: { 
 	    		type: 'select',
                 condition: 'equal',
@@ -399,7 +361,7 @@ $(function () {
                 listeners: ['change']
             }
     	},
-	    { title: "売買", width: 50, dataType: "string", align: 'center',
+	    { title: "売買", width: 50, dataType: "string", dataIndx: "sell", align: 'center',
             editor: {
                 type: "textbox",
                 align: "center",
@@ -413,7 +375,7 @@ $(function () {
                 listeners: ['change']
             }
     	},
-	    { title: "条件①", width: 50, dataType: "string", align: 'center',
+	    { title: "条件①", width: 50, dataType: "string", dataIndx: "rule1", align: 'center',
             editor: {
                 type: "textbox",
                 init: autoCompleteEditor
@@ -426,7 +388,7 @@ $(function () {
                 listeners: ['change']
             }
     	},
-	    { title: "条件②", width: 50, dataType: "string", align: 'center',
+	    { title: "条件②", width: 50, dataType: "string", dataIndx: "rule2", align: 'center',
             editor: {
                 type: "textbox",
                 init: autoCompleteEditor
@@ -439,7 +401,7 @@ $(function () {
                 listeners: ['change']
             }
     	},
-	    { title: "条件③", width: 50, dataType: "string", align: 'center',
+	    { title: "条件③", width: 50, dataType: "string", dataIndx: "rule3", align: 'center',
             editor: {
                 type: "textbox",
                 init: autoCompleteEditor
@@ -452,7 +414,7 @@ $(function () {
                 listeners: ['change']
             }
     	},
-    	{ title: "ﾌｨﾙﾀ1", width: 50, dataType: "string", align: 'center',
+    	{ title: "ﾌｨﾙﾀ1", width: 50, dataType: "string", dataIndx: "filter1", align: 'center',
             editor: {
                 type: "textbox",
                 init: autoCompleteEditor
@@ -465,7 +427,7 @@ $(function () {
                 listeners: ['change']
             }
     	},
-    	{ title: "ﾌｨﾙﾀ2", width: 50, dataType: "string", align: 'center',
+    	{ title: "ﾌｨﾙﾀ2", width: 50, dataType: "string", dataIndx: "filter2", align: 'center',
             editor: {
                 type: "textbox",
                 init: autoCompleteEditor
@@ -478,7 +440,7 @@ $(function () {
                 listeners: ['change']
             }
     	},
-    	{ title: "ﾌｨﾙﾀ3", width: 50, dataType: "string", align: 'center',
+    	{ title: "ﾌｨﾙﾀ3", width: 50, dataType: "string", dataIndx: "filter3", align: 'center',
             editor: {
                 type: "textbox",
                 init: autoCompleteEditor
@@ -491,7 +453,7 @@ $(function () {
                 listeners: ['change']
             }
     	},
-    	{ title: "ﾌｨﾙﾀ4", width: 50, dataType: "string", align: 'center',
+    	{ title: "ﾌｨﾙﾀ4", width: 50, dataType: "string", dataIndx: "filter4", align: 'center',
             editor: {
                 type: "textbox",
                 init: autoCompleteEditor
@@ -504,7 +466,7 @@ $(function () {
                 listeners: ['change']
             }
     	},
-    	{ title: "ﾌｨﾙﾀ5", width: 50, dataType: "string", align: 'center',
+    	{ title: "ﾌｨﾙﾀ5", width: 50, dataType: "string", dataIndx: "filter5", align: 'center',
             editor: {
                 type: "textbox",
                 init: autoCompleteEditor
@@ -517,7 +479,7 @@ $(function () {
                 listeners: ['change']
             }
     	},
-    	{ title: "ﾌｨﾙﾀ6", width: 50, dataType: "string", align: 'center',
+    	{ title: "ﾌｨﾙﾀ6", width: 50, dataType: "string", dataIndx: "filter6", align: 'center',
             editor: {
                 type: "textbox",
                 init: autoCompleteEditor
@@ -530,15 +492,30 @@ $(function () {
                 listeners: ['change']
             }
     	},
-	    { title: "備考", width: 200, dataType: "string",
+	    { title: "備考", width: 200, dataType: "string", dataIndx: "memo",
 	    	filter: { type: 'textbox', condition: 'begin', listeners: ['keyup'] }
     	}
 	];
-    obj.dataModel = {
-    	data: data
-    };
-    $pqgrid.pqGrid(obj);
     
+    // userテーブルのデータを取得してから表示
+    ajaxCall("/main/all", "GET", null, function(res) {
+
+    	// データがないときは空行を作成
+    	if(res == undefined || res.length == 0) {
+    		res = [{}];
+    	}
+    	
+    	// 取得したデータを反映
+    	obj.dataModel = {
+        	data: res
+        };
+        $pqgrid.pqGrid(obj);
+        
+        // 初回集計
+        aggregate();
+        
+    });
+
     //オブザーバーの作成
     const observer = new MutationObserver(records => {
         // 集計処理を実行
@@ -554,17 +531,18 @@ $(function () {
     //監視の開始
     observer.observe($pqgrid[0], options);
     
-    // 初回集計
-    aggregate();
 
-    
+
+    // 保存ボタン
     $("#save_btn").click(function() {
     	var data = [];
     	var $pqrow = $pqgrid.find(".pq-grid-table:eq(1)").find(".pq-grid-row");
     	for(var row of $pqrow) {
     		var main = {};
-    		main["id"] = $(row).children("td:eq(1)").text();
+    		main["date"] = $(row).children("td:eq(1)").text();
+    		main["day"] = $(row).children("td:eq(2)").text();
     		main["time"] = $(row).children("td:eq(3)").text();
+    		main["market"] = $(row).children("td:eq(4)").text();
     		main["sell"] = $(row).children("td:eq(5)").text();
     		main["rule1"] = $(row).children("td:eq(6)").text();
     		main["rule2"] = $(row).children("td:eq(7)").text();
@@ -583,12 +561,8 @@ $(function () {
     		}
     		data.push(main);
     	}
-    	ajaxCall("/main/save", "POST", data, function(res) {
-    		if(res.result == "ok") {
-    			alert("保存しました");
-    		} else {
-    			alert("保存に失敗しました");
-    		}
+    	ajaxCall("/main/save", "POST", {"data": JSON.stringify(data)}, function(res) {
+    		alert("保存しました");
     		// 画面を更新
     		location.reload();
     	})

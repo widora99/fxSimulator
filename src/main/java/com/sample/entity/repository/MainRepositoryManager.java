@@ -29,45 +29,31 @@ public class MainRepositoryManager {
 	 * 
 	 * @return
 	 */
-	public List<MainEntity> getAllMain() {
+	public List<MainEntity> getAllMain(String user) {
 
-		String sqlString = "select * from main order by id asc";
+		String sqlString = "select * from main where username = :user";
 		Query q = em.createNativeQuery(sqlString, MainEntity.class);
 
 		@SuppressWarnings("unchecked")
-		List<MainEntity> samples = (List<MainEntity>) q.getResultList();
+		List<MainEntity> mains = q.setParameter("user", user).getResultList();
 
-		return samples;
+		return mains;
 	}
 	
 
 	@Transactional
-	public String updateMain(MainEntity newmain) {
-		
-		MainEntity main = em.find(MainEntity.class, newmain.getId());
-		main.setTime(newmain.getTime());
-		main.setSell(newmain.getSell());
-		main.setRule1(newmain.getRule1());
-		main.setRule2(newmain.getRule2());
-		main.setRule3(newmain.getRule3());
-		main.setFilter1(newmain.getFilter1());
-		main.setFilter2(newmain.getFilter2());
-		main.setFilter3(newmain.getFilter3());
-		main.setFilter4(newmain.getFilter4());
-		main.setFilter5(newmain.getFilter5());
-		main.setFilter6(newmain.getFilter6());
-		em.merge(main);
-		
-		return "{\"result\": \"ok\"}";
+	public void insertMain(MainEntity main) {
+
+		em.persist(main);
+
 	}
 	
 	@Transactional
-	public String deleteMain(String id) {
+	public int deleteMain(String user) {
 		
-		MainEntity main = em.find(MainEntity.class, id);
-		em.remove(main);
-		
-		return "{\"result\": \"ok\"}";
+		int result = em.createNamedQuery("Main.byUser").setParameter("username", user).executeUpdate();
+		return result;
+
 	}
 
 

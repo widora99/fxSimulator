@@ -108,7 +108,7 @@
 	<!-- </appender> -->
 
 	<appender name="SampleAppender" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="File" value="c:\/tmp/sample.log" />
+		<param name="File" value="logs/fxsim.log" />
 		<param name="Append" value="true" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d{yyyy/MM/dd},%d{HH:mm:ss.SSS},%p,%c,%m%n" />

@@ -29,9 +29,9 @@ public class UserRepositoryManager {
 	 * 
 	 * @return
 	 */
-	public List<UserEntity> getAllMain() {
+	public List<UserEntity> getAllUser() {
 
-		String sqlString = "select * from main order by id asc";
+		String sqlString = "select * from user order by id asc";
 		Query q = em.createNativeQuery(sqlString, UserEntity.class);
 
 		@SuppressWarnings("unchecked")

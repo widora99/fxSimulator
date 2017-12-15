@@ -10,13 +10,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class ExceptionController {
 
-	@ExceptionHandler(Exception.class)
+	// 画面遷移とAjax通信で戻りのＨＴＭＬを変更する
+	@ExceptionHandler(HttpResponseException.class)
 	public ModelAndView responseException(HttpServletRequest request, HttpServletResponse response,
 			HttpResponseException ex) {
-		// log出力
-		Logger log = Logger.getLogger("FxAppender");
-		log.error("！！エラー！！", ex);
-		
+
 		ModelAndView mav = null;
 		if(isAjax(request)) {
 			// Ajaxリクエストには何も返さない
@@ -27,6 +25,17 @@ public class ExceptionController {
 			mav = new ModelAndView("systemError");
 		}
 		return mav;
+	}
+	
+	// log出力用。すべてのExceptionをキャッチ
+	@ExceptionHandler(Exception.class)
+	public void allException(HttpServletRequest request, HttpServletResponse response,
+			Exception ex) {
+		
+		// log出力
+		Logger log = Logger.getLogger("FxAppender");
+		log.error("！！エラー！！", ex);
+		
 	}
 	
 	public static boolean isAjax(HttpServletRequest request) {
