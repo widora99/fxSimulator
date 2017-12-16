@@ -1,6 +1,5 @@
 package com.sample.controller;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,25 +15,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.sample.entity.MainEntity;
-import com.sample.entity.repository.MainRepositoryManager;
+import com.sample.entity.Result2Entity;
+import com.sample.entity.repository.Result2RepositoryManager;
 
 @Controller
-public class MainController {
+public class Result2Controller {
 
 	@Autowired
-	private MainRepositoryManager mainmanager ; 
+	private Result2RepositoryManager result2manager ; 
 	
 	/**
-	 * mainテーブルのデータを返す
+	 * result2テーブルのデータを返す
 	 * 
 	 * @return
 	 *
 	 */
-	@RequestMapping(path = "/main/all", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+	@RequestMapping(path = "/result2/all", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	@ResponseBody
-	public String getMain(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String getResult2(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		// ログイン情報からユーザIDを取得
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -45,19 +43,19 @@ public class MainController {
 		  username = principal.toString();
 		}
 		
-		List<MainEntity> se = mainmanager.getAllMain(username);
+		List<Result2Entity> se = result2manager.getAllResult2(username);
 		Gson gson = new Gson();
 		
 		return gson.toJson(se);
 	}
 	
 	/**
-	 * mainテーブルのデータを保存する
+	 * result2テーブルのデータを保存する
 	 * 
 	 * @return
 	 *
 	 */
-	@RequestMapping(path = "/main/save", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+	@RequestMapping(path = "/result2/save", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public String saveUser(
 			@RequestParam(name = "data", required = true) String json,
@@ -73,15 +71,15 @@ public class MainController {
 		}
 		
 		// いったん全削除
-		mainmanager.deleteMain(username);
+		result2manager.deleteResult2(username);
 		
 		Gson gson = new Gson();
-		MainList list = gson.fromJson("{ \"mains\":" + json + "}", MainList.class);
+		Result2List list = gson.fromJson("{ \"result2s\":" + json + "}", Result2List.class);
 		
 		// 全件
-		for(MainEntity main : list.getMains()) {
-			main.setUsername(username);
-			mainmanager.insertMain(main);
+		for(Result2Entity result2 : list.getResult2s()) {
+			result2.setUsername(username);
+			result2manager.insertResult2(result2);
 		}
 		
 		return "{ \"result\": \"ok\"}";
@@ -92,15 +90,15 @@ public class MainController {
 	 * json変換用インナークラス
 	 *
 	 */
-	public class MainList {
-		private List<MainEntity> mains;
+	public class Result2List {
+		private List<Result2Entity> result2s;
 
-		public List<MainEntity> getMains() {
-			return mains;
+		public List<Result2Entity> getResult2s() {
+			return result2s;
 		}
 
-		public void setMains(List<MainEntity> mains) {
-			this.mains = mains;
+		public void setResult2s(List<Result2Entity> result2s) {
+			this.result2s = result2s;
 		}
 				
 	}

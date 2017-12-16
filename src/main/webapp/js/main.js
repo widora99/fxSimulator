@@ -137,21 +137,7 @@ $(function () {
 	$pqgrid = $("#grid_array");
 	// datepickerを日本語化する
 	$.datepicker.setDefaults( $.datepicker.regional[ "ja" ] );
-	
-	
-//	function addRow(rowIndx) {
-//        var rowData = {}; //empty row template
-//        //var rownum = $pqgrid.find("table:eq(2)").find("tr").length;
-//        $pqgrid.pqGrid("addRow", { rowIndxPage: rowIndx, rowData: rowData });
-//    }
-//    //called by delete button.
-//    function deleteRow(rowIndx) {
-//        $pqgrid.pqGrid("addClass", { rowIndx: rowIndx, cls: 'pq-row-delete' });
-//        var rowData = $pqgrid.pqGrid("getRowData", { rowIndx: rowIndx });
-//        $pqgrid.pqGrid("deleteRow", { rowIndx: rowIndx, effect: true });
-//
-//    }
-	
+		
 	// 時刻を[:]つきにする
     function formatTime(ui) {
         var cellData = ui.cellData;

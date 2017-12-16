@@ -156,8 +156,11 @@ public class DisplayController {
             HttpSession ses = request.getSession(true);
             String excel = (String) ses.getAttribute("excel");
                         
-            byte[] bytes = excel.getBytes(Charset.forName("MS932"));
-                    
+            // 空セルが化けてはてなになるので置換
+            byte[] bytemp = excel.getBytes(Charset.forName("MS932"));
+            String temp = new String(bytemp);
+            byte[] bytes = temp.replaceAll("\\?", "").getBytes();
+            
             response.setContentType("text/plain");
             
             response.setHeader("Content-Disposition",

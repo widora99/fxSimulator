@@ -9,16 +9,16 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
-import com.sample.entity.MainEntity;
+import com.sample.entity.Result2Entity;
 
 @Repository
-public class MainRepositoryManager {
+public class Result2RepositoryManager {
 	
 	@PersistenceContext(name = "PersistenceUnit")
 	private EntityManager em;
 
 	@Transactional
-	public void persist(MainEntity sEntity) {
+	public void persist(Result2Entity sEntity) {
 
 		em.persist(sEntity);
 
@@ -29,26 +29,26 @@ public class MainRepositoryManager {
 	 * 
 	 * @return
 	 */
-	public List<MainEntity> getAllMain(String user) {
+	public List<Result2Entity> getAllResult2(String user) {
 
-		String sqlString = "select * from main where username = :user";
-		Query q = em.createNativeQuery(sqlString, MainEntity.class);
+		String sqlString = "select * from result2 where username = :user";
+		Query q = em.createNativeQuery(sqlString, Result2Entity.class);
 
 		@SuppressWarnings("unchecked")
-		List<MainEntity> mains = q.setParameter("user", user).getResultList();
+		List<Result2Entity> result2 = q.setParameter("user", user).getResultList();
 
-		return mains;
+		return result2;
 	}
 	
 
 	/**
 	 * insert
-	 * @param main
+	 * @param result2
 	 */
 	@Transactional
-	public void insertMain(MainEntity main) {
+	public void insertResult2(Result2Entity result2) {
 
-		em.persist(main);
+		em.persist(result2);
 
 	}
 	
@@ -58,9 +58,9 @@ public class MainRepositoryManager {
 	 * @return
 	 */
 	@Transactional
-	public int deleteMain(String user) {
+	public int deleteResult2(String user) {
 		
-		int result = em.createNamedQuery("Main.byUser").setParameter("username", user).executeUpdate();
+		int result = em.createNamedQuery("Result2.byUser").setParameter("username", user).executeUpdate();
 		return result;
 
 	}
