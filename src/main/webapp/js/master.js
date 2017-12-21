@@ -86,6 +86,10 @@ $(function () {
     		alert("ユーザIDは変更できません");
     		return false;
     	}  	
+    	if($("#pass").val() === "") {
+    		alert("パスワードを入力してください");
+    		return;
+    	}
     	// 確認メッセージ
     	if(!confirm($selected.text() + "を更新します。よろしいですか？")) {
     		return false;
@@ -107,8 +111,14 @@ $(function () {
     });
     
     $("#new_btn").click(function() {
-    	var $selected = $("input[type=radio]:checked").closest("tr").children("td:eq(1)");
-    	
+    	if($("#u-id").val() === "") {
+    		alert("idを入力してください");
+    		return;
+    	}
+    	if($("#pass").val() === "") {
+    		alert("パスワードを入力してください");
+    		return;
+    	}
     	var data = {
     		id: $("#u-id").val(),
     		pass: $("#pass").val(),
