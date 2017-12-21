@@ -94,13 +94,10 @@ public class DisplayController {
 	 */
 	@RequestMapping(path = "/main", method = RequestMethod.GET)
 	public ModelAndView mainSimulate(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String role = auth.getAuthorities().stream()
-	        .map(GrantedAuthority::getAuthority)
-	        .collect(Collectors.joining("\n  "));
+		
 		
 		ModelAndView mav = new ModelAndView("main");
-		mav.addObject("auth", role);
+		mav.addObject("auth", getRole());
 
 		return mav;
 	}
@@ -114,6 +111,7 @@ public class DisplayController {
 	public ModelAndView result1(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		ModelAndView mav = new ModelAndView("result1");
+		mav.addObject("auth", getRole());
 
 		return mav;
 	}
@@ -127,6 +125,7 @@ public class DisplayController {
 	public ModelAndView result2(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		ModelAndView mav = new ModelAndView("result2");
+		mav.addObject("auth", getRole());
 
 		return mav;
 	}
@@ -157,11 +156,11 @@ public class DisplayController {
             String excel = (String) ses.getAttribute("excel");
                         
             // 空セルが化けてはてなになるので置換
-            byte[] bytemp = excel.getBytes(Charset.forName("MS932"));
-            String temp = new String(bytemp);
-            byte[] bytes = temp.replaceAll("\\?", "").getBytes();
+            byte[] bytemp = excel.getBytes(Charset.forName("UTF-8"));
+            String temp = new String(bytemp, "UTF-8");
+            byte[] bytes = temp.replaceAll(" ", "").replaceAll("undefined", "").getBytes("MS932");
             
-            response.setContentType("text/plain");
+            response.setContentType("text/csv;charset=MS932");
             
             response.setHeader("Content-Disposition",
                     "attachment;filename=" + filename);
@@ -174,4 +173,12 @@ public class DisplayController {
         }
     }
 	
+    public static String getRole() {
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String role = auth.getAuthorities().stream()
+	        .map(GrantedAuthority::getAuthority)
+	        .collect(Collectors.joining("\n  "));
+		return role;
+    }
+    
 }

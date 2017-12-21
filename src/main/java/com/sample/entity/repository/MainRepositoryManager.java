@@ -31,7 +31,7 @@ public class MainRepositoryManager {
 	 */
 	public List<MainEntity> getAllMain(String user) {
 
-		String sqlString = "select * from main where username = :user";
+		String sqlString = "select * from main where username = :user order by id asc";
 		Query q = em.createNativeQuery(sqlString, MainEntity.class);
 
 		@SuppressWarnings("unchecked")

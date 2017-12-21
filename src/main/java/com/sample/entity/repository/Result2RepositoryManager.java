@@ -31,7 +31,7 @@ public class Result2RepositoryManager {
 	 */
 	public List<Result2Entity> getAllResult2(String user) {
 
-		String sqlString = "select * from result2 where username = :user";
+		String sqlString = "select * from result2 where username = :user order by id asc";
 		Query q = em.createNativeQuery(sqlString, Result2Entity.class);
 
 		@SuppressWarnings("unchecked")

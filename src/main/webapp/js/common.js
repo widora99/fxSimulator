@@ -13,13 +13,15 @@ $(function() {
         $pqgrid.pqGrid("addClass", { rowIndx: rowIndx, cls: 'pq-row-delete' });
         var rowData = $pqgrid.pqGrid("getRowData", { rowIndx: rowIndx });
         $pqgrid.pqGrid("deleteRow", { rowIndx: rowIndx, effect: true });
-
     }
 	
     $("#button_area").on("click", "#clear_btn", function() {
-		$pqgrid.find(".pq-grid-cell").each(function() {
-			$(this).text("");
-		});
+    	if(typeof defaultData != "function") {
+    		$pqgrid.pqGrid( "option", "dataModel", { data: [{}] } );
+    	} else {
+    		$pqgrid.pqGrid( "option", "dataModel", { data: defaultData() } );
+    	}
+		$pqgrid.pqGrid( "refreshDataAndView");
 	});
     
 	$("#button_area").on("click", "#add_btn", function() {

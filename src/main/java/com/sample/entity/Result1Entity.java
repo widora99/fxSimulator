@@ -10,11 +10,11 @@ import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
 @NamedQueries({
-	  @NamedQuery(name = "Result2.byUser", 
-	     query = "delete from result2 m where m.username = :username")
+	  @NamedQuery(name = "Result1.byUser", 
+	     query = "delete from result1 m where m.username = :username")
 	})
-@Entity(name="result2")
-public class Result2Entity {
+@Entity(name="result1")
+public class Result1Entity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +24,6 @@ public class Result2Entity {
 	private String username;
 	@Column
 	private String currency;	
-	@Column
-	private String span;
 	@Column
 	private String ranges;
 	@Column
@@ -56,13 +54,6 @@ public class Result2Entity {
 	public void setCurrency(String currency) {
 		this.currency = currency;
 	}
-	public String getSpan() {
-		return span;
-	}
-	public void setSpan(String span) {
-		this.span = span;
-	}
-	
 	public String getRanges() {
 		return ranges;
 	}

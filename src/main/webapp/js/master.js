@@ -58,7 +58,7 @@ $(function () {
     
     $("#delete_btn").click(function() {
     	$selected = $("input[type=radio]:checked").closest("tr").children("td:eq(1)");
-    	if($selected.text() != "admin") {
+    	if($selected.text() == "admin") {
     		alert("adminは削除できません");
     		return false;
     	}

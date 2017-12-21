@@ -1,10 +1,44 @@
+var defaultData = function() {
+	return 	[
+		{"currency" : "USDJPY"},
+		{"currency" : "EURJPY"},
+		{"currency" : "GBPJPY"},
+		{"currency" : "AUDJPY"},
+		{"currency" : "NZDJPY"},
+		{"currency" : "CADJPY"},
+		{"currency" : "CHFJPY"},
+		{"currency" : "EURUSD"},
+		{"currency" : "GBPUSD"},
+		{"currency" : "AUDUSD"},
+		{"currency" : "NZDUSD"},
+		{"currency" : "USDCAD"},
+		{"currency" : "USDCHF"},
+		{"currency" : "EURAUD"},
+		{"currency" : "EURNZD"},
+		{"currency" : "EURCAD"},
+		{"currency" : "EURCHF"},
+		{"currency" : "EURGBP"},
+		{"currency" : "GBPAUD"},
+		{"currency" : "GBPNZD"},
+		{"currency" : "GBPCAD"},
+		{"currency" : "GBPCHF"},
+		{"currency" : "AUDNZD"},
+		{"currency" : "AUDCAD"},
+		{"currency" : "NZDCAD"},
+		{"currency" : "AUDCHF"},
+		{"currency" : "NZDCHF"},
+		{"currency" : "CADCHF"}
+	];
+}
+
 $(function () {
 	
-	$("#result2_link").remove();
+	$("#result1_link").remove();
+	$("#del_btn").remove();
+	$("#add_btn").remove();
 	
 	/* 表部分の処理 */
     currencyIdx = ["USDJPY", "EURJPY", "GBPJPY", "AUDJPY", "NZDJPY", "CADJPY", "CHFJPY", "EURUSD", "GBPUSD", "AUDUSD", "NZDUSD", "USDCAD", "USDCHF", "EURAUD", "EURNZD", "EURCAD", "EURCHF", "EURGBP", "GBPAUD", "GBPNZD", "GBPCAD", "GBPCHF", "AUDNZD", "AUDCAD", "NZDCAD", "AUDCHF", "NZDCHF", "CADCHF"];
-    spanIdx = ["1分足", "5分足", "15分足", "30分足", "1H足", "4H足", "日足"];
         
 	$pqgrid = $("#grid_array");
 	// datepickerを日本語化する
@@ -16,12 +50,11 @@ $(function () {
     	switch(idx) {
     	case "currency":
     		return currencyIdx;
-        case "span":
-        	return spanIdx;
         default:
         	return [];
         }
     }
+     
     
     // セレクト式エディタ
     var autoCompleteEditor = function (ui) {
@@ -65,20 +98,6 @@ $(function () {
                 listeners: ['change']
             }
     	},
-    	{ title: "時間足", width: 80, dataType: "stirng", dataIndx: "span", align: 'center',
-            editor: {
-                type: "textbox",
-                align: "center",
-                init: autoCompleteEditor
-            },
-	    	filter: { 
-	    		type: 'select',
-                condition: 'equal',
-                options: spanIdx,
-                prepend: { '': '' },
-                listeners: ['change']
-            }
-    	},
 	    { title: "検証期間", width: 150, dataType: "stirng", dataIndx: "ranges", align: 'center',
     		filter: { type: 'textbox', condition: 'begin', listeners: ['keyup'] }
     	},
@@ -113,11 +132,11 @@ $(function () {
     
 
     // userテーブルのデータを取得してから表示
-    ajaxCall("/result2/all", "GET", null, function(res) {
+    ajaxCall("/result1/all", "GET", null, function(res) {
 
     	// データがないときは空行を作成
     	if(res == undefined || res.length == 0) {
-    		res = [{}];
+    		res = defaultData;
     	}
     	
     	// 取得したデータを反映
@@ -135,22 +154,21 @@ $(function () {
     	for(var row of $pqrow) {
     		var main = {};
     		main["currency"] = $(row).children("td:eq(1)").text();
-    		main["span"] = $(row).children("td:eq(2)").text();
-    		main["ranges"] = $(row).children("td:eq(3)").text();
-    		main["total"] = $(row).children("td:eq(4)").text();
-    		main["win"] = $(row).children("td:eq(5)").text();
-    		main["lose"] = $(row).children("td:eq(6)").text();
-    		main["per"] = $(row).children("td:eq(7)").text();
-    		main["memo"] = $(row).children("td:eq(8)").text();
+    		main["ranges"] = $(row).children("td:eq(2)").text();
+    		main["total"] = $(row).children("td:eq(3)").text();
+    		main["win"] = $(row).children("td:eq(4)").text();
+    		main["lose"] = $(row).children("td:eq(5)").text();
+    		main["per"] = $(row).children("td:eq(6)").text();
+    		main["memo"] = $(row).children("td:eq(7)").text();
 
     		if(main["memo"].length > 100) {
     			alert("備考が長すぎます");
-    			$(row).children("td:eq(8)").addClass("error");
+    			$(row).children("td:eq(7)").addClass("error");
     			return false;
     		}
     		data.push(main);
     	}
-    	ajaxCall("/result2/save", "POST", {"data": JSON.stringify(data)}, function(res) {
+    	ajaxCall("/result1/save", "POST", {"data": JSON.stringify(data)}, function(res) {
     		alert("保存しました");
     		// 画面を更新
     		location.reload();

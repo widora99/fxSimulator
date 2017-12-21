@@ -15,24 +15,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
-import com.sample.entity.MainEntity;
-import com.sample.entity.repository.MainRepositoryManager;
+import com.sample.entity.Result1Entity;
+import com.sample.entity.repository.Result1RepositoryManager;
 
 @Controller
-public class MainController {
+public class Result1Controller {
 
 	@Autowired
-	private MainRepositoryManager mainmanager ; 
+	private Result1RepositoryManager result1manager ; 
 	
 	/**
-	 * mainテーブルのデータを返す
+	 * result1テーブルのデータを返す
 	 * 
 	 * @return
 	 *
 	 */
-	@RequestMapping(path = "/main/all", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+	@RequestMapping(path = "/result1/all", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	@ResponseBody
-	public String getMain(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String getResult1(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		// ログイン情報からユーザIDを取得
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -43,19 +43,19 @@ public class MainController {
 		  username = principal.toString();
 		}
 		
-		List<MainEntity> se = mainmanager.getAllMain(username);
+		List<Result1Entity> se = result1manager.getAllResult1(username);
 		Gson gson = new Gson();
 		
 		return gson.toJson(se);
 	}
 	
 	/**
-	 * mainテーブルのデータを保存する
+	 * result1テーブルのデータを保存する
 	 * 
 	 * @return
 	 *
 	 */
-	@RequestMapping(path = "/main/save", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+	@RequestMapping(path = "/result1/save", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public String saveUser(
 			@RequestParam(name = "data", required = true) String json,
@@ -71,15 +71,15 @@ public class MainController {
 		}
 		
 		// いったん全削除
-		mainmanager.deleteMain(username);
+		result1manager.deleteResult1(username);
 		
 		Gson gson = new Gson();
-		MainList list = gson.fromJson("{ \"mains\":" + json + "}", MainList.class);
+		Result1List list = gson.fromJson("{ \"result1s\":" + json + "}", Result1List.class);
 		
 		// 全件
-		for(MainEntity main : list.getMains()) {
-			main.setUsername(username);
-			mainmanager.insertMain(main);
+		for(Result1Entity result1 : list.getResult1s()) {
+			result1.setUsername(username);
+			result1manager.insertResult1(result1);
 		}
 		
 		return "{ \"result\": \"ok\"}";
@@ -90,15 +90,15 @@ public class MainController {
 	 * json変換用インナークラス
 	 *
 	 */
-	public class MainList {
-		private List<MainEntity> mains;
+	public class Result1List {
+		private List<Result1Entity> result1s;
 
-		public List<MainEntity> getMains() {
-			return mains;
+		public List<Result1Entity> getResult1s() {
+			return result1s;
 		}
 
-		public void setMains(List<MainEntity> mains) {
-			this.mains = mains;
+		public void setResult1s(List<Result1Entity> result1s) {
+			this.result1s = result1s;
 		}
 				
 	}

@@ -2,20 +2,34 @@ $(function () {
 
 	$("#main_link").remove();
 	
+	$pqgrid = $("#grid_array");
+	
 	// 条件名の変更を反映する
 	$("#rule1").change(function() {
 		$("#div-rule1").text($(this).val());
-		$("#grid_array table tr.pq-grid-title-row > td:nth-child(7) > div").text($(this).val());
+		
+		var colM = $pqgrid.pqGrid( "option", "colModel" );
+		colM[5].title = $(this).val();
+		$pqgrid.pqGrid( "option", "colModel", colM );
+		$pqgrid.pqGrid( "refresh");
+
 	});
 	
 	$("#rule2").change(function() {
 		$("#div-rule2").text($(this).val());
-		$("#grid_array table tr.pq-grid-title-row > td:nth-child(8) > div").text($(this).val());
+		var colM = $pqgrid.pqGrid( "option", "colModel" );
+		colM[6].title = $(this).val();
+		$pqgrid.pqGrid( "option", "colModel", colM );
+		$pqgrid.pqGrid( "refresh");
+
 	});
 	
 	$("#rule3").change(function() {
 		$("#div-rule3").text($(this).val());
-		$("#grid_array table tr.pq-grid-title-row > td:nth-child(9) > div").text($(this).val());
+		var colM = $pqgrid.pqGrid( "option", "colModel" );
+		colM[7].title = $(this).val();
+		$pqgrid.pqGrid( "option", "colModel", colM );
+		$pqgrid.pqGrid( "refresh");
 	});
 
 	// 表部分の値を集計してヘッダ部に反映する
@@ -134,7 +148,7 @@ $(function () {
     sellIdx = ["売", "買"];
     marketIdx = ["アジア", "NY", "ロンドン", "その他"];
     
-	$pqgrid = $("#grid_array");
+
 	// datepickerを日本語化する
 	$.datepicker.setDefaults( $.datepicker.regional[ "ja" ] );
 		
