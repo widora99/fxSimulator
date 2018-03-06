@@ -257,7 +257,9 @@ $(function () {
 	    		if(time !== undefined) {
 	    			var cell = $pqgrid.pqGrid( "getCell", { rowIndx: row.rowIndx, dataIndx: "market" } );
 	    			if(cell !== null && cell !== undefined) {
-	    				cell.text(marketSelector(time));
+	                    var rowData = $pqgrid.pqGrid( "getRowData", {rowIndxPage: row.rowIndx} );
+	                    rowData["market"] = marketSelector(time);
+	                    $pqgrid.pqGrid( "refreshDataAndView" );
 	    			}
 	    		}
     		}
@@ -304,7 +306,7 @@ $(function () {
             showAnim: '',
             onSelect: function () {
                 this.firstOpen = true;
-                validate(this);
+                //validate(this);
             },
             beforeShow: function (input, inst) {
                 return !this.firstOpen;
@@ -312,29 +314,31 @@ $(function () {
             onClose: function (evt, ui) {
                 this.focus();
                 var daystr = dateIdx[new Date(this.value).getDay()];
-                $pqgrid.pqGrid( "getCell", { rowIndx: rowidx, dataIndx: "day" } ).text(daystr);
+                var rowData = $pqgrid.pqGrid( "getRowData", {rowIndxPage: rowidx} );
+                rowData["day"] = daystr;
+                $pqgrid.pqGrid( "refreshDataAndView" );
             }
         });
     }
 
 
     var obj = { 
-    	width: 1050,
+        width: 1050,
     	height: 600,
     	showTop: false,
     	showBottom: false,
     	stripeRows: true,
     	scrollModel: { autoFit: true },
-    	selectionModel: { type: 'cell' },
-        filterModel: { on: true, mode: "AND", header: true },
+    	flexHeight: true,
+    	filterModel: { on: true, mode: "AND", header: true },
         change: gridChanged
     };
     obj.colModel = [
     	{ title: "日付", width: 200, dataType: "date", dataIndx: "date", align: 'center',
     		editor: { type: 'textbox', init: dateEditor },
-//    		validations: [
-//                { type: 'regexp', value: '^[0-9]{0,4}/{0,1}[0-9]{0,2}/{0,1}[0-9]{0,2}$', msg: 'yyyy/MM/dd形式で入力してください' }
-//            ],
+    		validations: [
+                { type: 'regexp', value: '^[0-9]{0,4}/{0,1}[0-9]{0,2}/{0,1}[0-9]{0,2}$', msg: 'yyyy/MM/dd形式で入力してください' }
+            ],
     		filter: { type: 'textbox', condition: "between", init: pqDatePicker, listeners: ['change'] }
     	},
 	    { title: "曜日", width: 50, dataType: "stirng", dataIndx: "day", align: 'center', editable: false,
@@ -380,6 +384,9 @@ $(function () {
                 type: "textbox",
                 init: autoCompleteEditor
             },
+            validations: [
+                { type: 'regexp', value: '^[〇×]{0,1}$', msg: '〇、×、ブランク以外入力できません' }
+            ],
 	    	filter: { 
 	    		type: 'select',
                 condition: 'equal',
@@ -393,6 +400,9 @@ $(function () {
                 type: "textbox",
                 init: autoCompleteEditor
             },
+            validations: [
+                { type: 'regexp', value: '^[〇×]{0,1}$', msg: '〇、×、ブランク以外入力できません' }
+            ],
 	    	filter: { 
 	    		type: 'select',
                 condition: 'equal',
@@ -406,6 +416,9 @@ $(function () {
                 type: "textbox",
                 init: autoCompleteEditor
             },
+            validations: [
+                { type: 'regexp', value: '^[〇×]{0,1}$', msg: '〇、×、ブランク以外入力できません' }
+            ],
 	    	filter: { 
 	    		type: 'select',
                 condition: 'equal',

@@ -47,6 +47,7 @@ $(function () {
     	showBottom: false,
     	stripeRows: true,
     	scrollModel: { autoFit: true },
+    	flexHeight: true,
     	selectionModel: { type: 'cell' },
         filterModel: { on: true, mode: "AND", header: true },
     };
