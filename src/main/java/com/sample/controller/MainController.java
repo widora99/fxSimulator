@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.sample.entity.HeaderEntity;
 import com.sample.entity.MainEntity;
+import com.sample.entity.repository.HeaderRepositoryManager;
 import com.sample.entity.repository.MainRepositoryManager;
 
 @Controller
@@ -23,6 +25,9 @@ public class MainController {
 
 	@Autowired
 	private MainRepositoryManager mainmanager ; 
+	
+	@Autowired
+	private HeaderRepositoryManager headermanager ;
 	
 	/**
 	 * mainテーブルのデータを返す
@@ -81,6 +86,66 @@ public class MainController {
 			main.setUsername(username);
 			mainmanager.insertMain(main);
 		}
+		
+		return "{ \"result\": \"ok\"}";
+		
+	}
+	
+	/**
+	 * mainテーブルのヘッダデータを返す
+	 * 
+	 * @return
+	 *
+	 */
+	@RequestMapping(path = "/main/header", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public String getMainHeader(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		// ログイン情報からユーザIDを取得
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = "";
+		if (principal instanceof UserDetails) {
+		  username = ((UserDetails)principal).getUsername();
+		} else {
+		  username = principal.toString();
+		}
+		
+		HeaderEntity se = headermanager.getHeader(username);
+		Gson gson = new Gson();
+		
+		return gson.toJson(se);
+	}
+	
+	/**
+	 * mainテーブルのデータを保存する
+	 * 
+	 * @return
+	 *
+	 */
+	@RequestMapping(path = "/main/headersave", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public String saveHeader(
+			@RequestParam(name = "data", required = true) String json,
+			HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		// ログイン情報からユーザIDを取得
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = "";
+		if (principal instanceof UserDetails) {
+		  username = ((UserDetails)principal).getUsername();
+		} else {
+		  username = principal.toString();
+		}
+		
+		// いったん削除
+		headermanager.deleteHeader(username);
+		
+		Gson gson = new Gson();
+		HeaderEntity header = gson.fromJson( json, HeaderEntity.class);
+		
+		// １件
+		header.setUsername(username);
+		headermanager.insertHeader(header);
 		
 		return "{ \"result\": \"ok\"}";
 		

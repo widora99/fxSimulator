@@ -22,21 +22,38 @@ $(function() {
 	});
     
 	$("#button_area").on("click", "#add_btn", function() {
-		var $tr = $pqgrid.find(".pq-cell-select").closest("tr"),
-	    rowIndx = $pqgrid.pqGrid("getRowIndx", { $tr: $tr }).rowIndx;
-		addRow(rowIndx + 1);
+		addrowbtn();
 	});
 	
 	$("#button_area").on("click", "#del_btn", function() {
-		var $tr = $pqgrid.find(".pq-cell-select").closest("tr"),
-	    rowIndx = $pqgrid.pqGrid("getRowIndx", { $tr: $tr }).rowIndx;
-		deleteRow(rowIndx);
+		delrowbtn();
 	});
 	
 	$("#button_area").on("click", "#exp_btn", function() {
 		$pqgrid.pqGrid("exportCsv", { url: "/fxSimulator/excel" });
 	});
 	
+	$(window).keydown(function(e){
+		if(e.keyCode == 107) {
+			addrowbtn();
+		}
+	});
+	
+	$(window).keydown(function(e){
+		if(e.keyCode == 109) {
+			delrowbtn();
+		}
+	});
+	function addrowbtn() {
+		var $tr = $pqgrid.find(".pq-cell-select").closest("tr"),
+	    rowIndx = $pqgrid.pqGrid("getRowIndx", { $tr: $tr }).rowIndx;
+		addRow(rowIndx + 1);
+	}
+	function delrowbtn() {
+		var $tr = $pqgrid.find(".pq-cell-select").closest("tr"),
+	    rowIndx = $pqgrid.pqGrid("getRowIndx", { $tr: $tr }).rowIndx;
+		deleteRow(rowIndx);
+	}
 });
 
 function ajaxCall(uri, method, data, func, errfunc) {

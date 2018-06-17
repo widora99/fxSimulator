@@ -13,13 +13,7 @@ $(function () {
     	$("#pass").val($(td[2]).text());
     	$("#name").val($(td[3]).text());
     });
-	
-    var data = [
-    	['admin', 'admin', '管理者', '管理者'],
-    	['user1', 'user1Pass', 'ユーザ１', '学生'],
-    	['user2', 'user2Pass', 'ユーザ２', '学生'],
-    	['user3', 'user3Pass', 'ユーザ', '学生'],
-    ];
+	  
 
     var obj = { 
     	width: 700,

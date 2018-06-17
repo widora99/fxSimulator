@@ -31,7 +31,7 @@ $(function () {
 		$pqgrid.pqGrid( "option", "colModel", colM );
 		$pqgrid.pqGrid( "refresh");
 	});
-
+	
 	// 表部分の値を集計してヘッダ部に反映する
 	function aggregate() {
 		var $pqtable = $pqgrid.find(".pq-grid-table:eq(1)");
@@ -529,6 +529,27 @@ $(function () {
         
     });
 
+    // userテーブルのデータを取得してから表示
+    ajaxCall("/main/header", "GET", null, function(res) {
+
+    	$("#c-pair").text(res.currency);
+    	$("#period").text(res.ranges);
+    	$("#term").text(res.term);
+    	$("#condition").text(res.conditions);
+    	$("#rule1").val(res.cond1);
+    	$("#rule2").val(res.cond2);
+    	$("#rule3").val(res.cond3);
+    	$("#fil1").text(res.fil1);
+    	$("#fil2").text(res.fil2);
+    	$("#fil3").text(res.fil3);
+    	$("#fil4").text(res.fil4);
+    	$("#fil5").text(res.fil5);
+    	$("#fil6").text(res.fil6);
+        
+    });
+    
+	
+    
     //オブザーバーの作成
     const observer = new MutationObserver(records => {
         // 集計処理を実行
@@ -548,6 +569,28 @@ $(function () {
 
     // 保存ボタン
     $("#save_btn").click(function() {
+    	
+    	var header = {};
+    	header["currency"] = $("#c-pair").text();
+    	header["ranges"] = $("#period").text();
+    	header["term"] = $("#term").text();
+    	header["conditions"] = $("#condition").val();
+    	header["cond1"] = $("#rule1").val();
+    	header["cond2"] = $("#rule2").val();
+    	header["cond3"] = $("#rule3").val();
+    	header["fil1"] = $("#fil1").text();
+    	header["fil2"] = $("#fil2").text();
+    	header["fil3"] = $("#fil3").text();
+    	header["fil4"] = $("#fil4").text();
+    	header["fil5"] = $("#fil5").text();
+    	header["fil6"] = $("#fil6").text();
+    	
+    	ajaxCall("/main/headersave", "POST", {"data": JSON.stringify(header)}, 
+    			function(res) { }, 
+    			function(error) {
+    				alert("ヘッダが保存できませんでした");
+    			});
+    	
     	var data = [];
     	var $pqrow = $pqgrid.find(".pq-grid-table:eq(1)").find(".pq-grid-row");
     	for(var row of $pqrow) {
@@ -565,11 +608,11 @@ $(function () {
     		main["filter3"] = $(row).children("td:eq(11)").text();
     		main["filter4"] = $(row).children("td:eq(12)").text();
     		main["filter5"] = $(row).children("td:eq(13)").text();
-    		main["filter6"] = $(row).children("td:eq(13)").text();
-    		main["memo"] = $(row).children("td:eq(13)").text();
+    		main["filter6"] = $(row).children("td:eq(14)").text();
+    		main["memo"] = $(row).children("td:eq(15)").text();
     		if(main["memo"].length > 100) {
     			alert("備考が長すぎます");
-    			$(row).children("td:eq(13)").addClass("error");
+    			$(row).children("td:eq(15)").addClass("error");
     			return false;
     		}
     		data.push(main);

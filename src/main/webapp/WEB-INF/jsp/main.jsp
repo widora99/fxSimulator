@@ -2,13 +2,13 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div id="summary_area">
-	<div class="title">通貨ペア</div><div id="c-pair" class="head-val" contenteditable=true>USDJPY</div>
-	<div class="title">時間足</div><div id="period" class="head-val" contenteditable=true>1分足</div>
-	<div class="title">検証期間</div><div id="term" class="head-val" contenteditable=true>2/7～3/3</div>
+	<div class="title">通貨ペア</div><div id="c-pair" class="head-val" contenteditable=true ></div>
+	<div class="title">時間足</div><div id="period" class="head-val" contenteditable=true></div>
+	<div class="title">検証期間</div><div id="term" class="head-val" contenteditable=true></div>
 	<div class="title">１日最大トレード回数</div>
 </div>
 <div>
-	<div class="title">条件</div><textarea id="condition" class="head-val long">xxxxな方法</textarea>
+	<div class="title">条件</div><textarea id="condition" class="head-val long" placeholder="xxxxな方法"></textarea>
 	<div id="max-trade">0</div>
 </div>
 <div>
@@ -17,15 +17,15 @@
 </div>
 <div class="rule_result">
 	<div class="title"><input id="rule1" type="text" class="head-val" placeholder="条件①"></input></div><div id="rulenum1" class="head-val">0</div><div id="ruleper1" class="head-val">0</div>
-	<div class="title short">1</div><div class="head-val long" contenteditable=true>　</div><div class="title short">4</div><div class="head-val long" contenteditable=true>　</div>
+	<div class="title short">1</div><div id="fil1" class="head-val long" contenteditable=true>　</div><div class="title short">4</div><div id="fil4" class="head-val long" contenteditable=true>　</div>
 </div>
 <div class="rule_result">
 	<div class="title"><input id="rule2" type="text" class="head-val" placeholder="条件②"></input></div><div id="rulenum2" class="head-val">0</div><div id="ruleper2" class="head-val">0</div>
-	<div class="title short">2</div><div class="head-val long" contenteditable=true>　</div><div class="title short">5</div><div class="head-val long" contenteditable=true>　</div>
+	<div class="title short">2</div><div id="fil2" class="head-val long" contenteditable=true>　</div><div class="title short">5</div><div id="fil5" class="head-val long" contenteditable=true>　</div>
 </div>
 <div class="rule_result">
 	<div class="title"><input id="rule3" type="text" class="head-val" placeholder="条件③"></input></div><div id="rulenum3" class="head-val">0</div><div id="ruleper3" class="head-val">0</div>
-	<div class="title short">3</div><div class="head-val long" contenteditable=true>　</div><div class="title short">6</div><div class="head-val long" contenteditable=true>　</div>
+	<div class="title short">3</div><div id="fil3" class="head-val long" contenteditable=true>　</div><div class="title short">6</div><div id="fil6" class="head-val long" contenteditable=true>　</div>
 </div>
 
 <div>
